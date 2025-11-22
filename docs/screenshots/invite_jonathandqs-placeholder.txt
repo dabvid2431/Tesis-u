@@ -1,0 +1,12 @@
+Por favor, sube aquí la captura de pantalla que confirma la invitación al colaborador `JonathanDQS`.
+
+Ruta sugerida en el repo: `docs/screenshots/invite_jonathandqs.png`
+
+Instrucciones rápidas:
+1. Ve al repositorio en GitHub.
+2. Settings -> Collaborators and teams -> Add collaborator.
+3. Busca `JonathanDQS` y confirma la invitación.
+4. Haz una captura de la pantalla que muestre el nombre del colaborador o la lista de colaboradores.
+5. Guarda la imagen con el nombre `invite_jonathandqs.png` y súbela a esta carpeta.
+
+(Archivo placeholder creado automáticamente por el asistente.)

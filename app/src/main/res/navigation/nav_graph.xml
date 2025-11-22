@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.LoginFragment"
+        android:label="Login">
+        <action
+            android:id="@+id/action_loginFragment_to_adminMenuFragment"
+            app:destination="@id/adminMenuFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_saleListFragment"
+            app:destination="@id/saleListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminMenuFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.AdminMenuFragment"
+        android:label="Menú Admin" />
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.CreateAccountFragment"
+        android:label="Crear Cuenta" />
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.ProductListFragment"
+        android:label="Lista de Productos">
+        <action
+            android:id="@+id/action_productListFragment_to_productFormFragment"
+            app:destination="@id/productFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productFormFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.ProductFormFragment"
+        android:label="Agregar Producto" />
+    <fragment
+        android:id="@+id/categoryListFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.CategoryListFragment"
+        android:label="Categorías">
+        <action
+            android:id="@+id/action_categoryListFragment_to_categoryFormFragment"
+            app:destination="@id/categoryFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFormFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.CategoryFormFragment"
+        android:label="Agregar Categoría" />
+    <fragment
+        android:id="@+id/supplierListFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.SupplierListFragment"
+        android:label="Proveedores">
+        <action
+            android:id="@+id/action_supplierListFragment_to_supplierFormFragment"
+            app:destination="@id/supplierFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/supplierFormFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.SupplierFormFragment"
+        android:label="Agregar Proveedor" />
+    <fragment
+        android:id="@+id/clientListFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.ClientListFragment"
+        android:label="Clientes">
+        <action
+            android:id="@+id/action_clientListFragment_to_clientFormFragment"
+            app:destination="@id/clientFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clientFormFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.ClientFormFragment"
+        android:label="Agregar Cliente" />
+    <fragment
+        android:id="@+id/purchaseListFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.PurchaseListFragment"
+        android:label="Compras">
+        <action
+            android:id="@+id/action_purchaseListFragment_to_purchaseFormFragment"
+            app:destination="@id/purchaseFormFragment" />
+        <action
+            android:id="@+id/action_purchaseListFragment_to_purchaseDetailFragment"
+            app:destination="@id/purchaseDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/purchaseFormFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.PurchaseFormFragment"
+        android:label="Agregar Compra" />
+    <fragment
+        android:id="@+id/purchaseDetailFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.PurchaseDetailFragment"
+        android:label="Detalle de Compra" />
+    <fragment
+        android:id="@+id/saleListFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.SaleListFragment"
+        android:label="Ventas">
+        <action
+            android:id="@+id/action_saleListFragment_to_saleFormFragment"
+            app:destination="@id/saleFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saleFormFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.SaleFormFragment"
+        android:label="Agregar Venta" />
+</navigation>

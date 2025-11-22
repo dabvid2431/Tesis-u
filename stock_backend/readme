@@ -1,0 +1,41 @@
+# API Stock Backend
+
+## Categorías
+- GET /api/categories → Listar categorías
+- POST /api/categories → Crear categoría
+- PUT /api/categories/:id → Actualizar categoría
+- DELETE /api/categories/:id → Eliminar categoría
+
+## Productos
+- GET /api/products → Listar productos
+- POST /api/products → Crear producto
+- PUT /api/products/:id → Actualizar producto
+- DELETE /api/products/:id → Eliminar producto
+
+## Proveedores
+- GET /api/suppliers
+- POST /api/suppliers
+- PUT /api/suppliers/:id
+- DELETE /api/suppliers/:id
+
+## Clientes
+- GET /api/clients
+- POST /api/clients
+- PUT /api/clients/:id
+- DELETE /api/clients/:id
+
+## Compras
+- GET /api/purchases
+- POST /api/purchases
+
+## Ventas
+- GET /api/sales
+- POST /api/sales
+
+## Stock
+- GET /api/stock → Todos los productos
+- GET /api/stock/low → Productos con stock bajo
+
+## Raíz
+- GET / → Mensaje de bienvenida
+- GET /health → Estado del backend

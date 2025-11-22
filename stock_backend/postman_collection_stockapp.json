@@ -1,0 +1,148 @@
+{
+  "info": {
+    "_postman_id": "f9b2b6d8-3a6f-4a5c-9b1c-123456789abc",
+    "name": "StockApp API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección Postman para probar el backend de StockApp (usar la variable {{base_url}})"
+  },
+  "item": [
+    {
+      "name": "Register User (POST /users)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\",\n  \"role\": \"admin\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{base_url}}/users", "host": ["{{base_url}}"], "path": ["users"] },
+        "description": "Crea un usuario. Ajusta username/password/role según necesites."
+      }
+    },
+    {
+      "name": "Login (POST /login)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"] },
+        "description": "Inicia sesión y guarda usuario en las variables de entorno para usar después."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Guarda id y username en las variables de entorno si el login es exitoso",
+              "if (pm.response.code === 200) {",
+              "  const json = pm.response.json();",
+              "  if (json.id) pm.environment.set('auth_user_id', json.id);",
+              "  if (json.username) pm.environment.set('auth_username', json.username);",
+              "  if (json.role) pm.environment.set('auth_role', json.role);",
+              "  pm.environment.set('logged_in', 'true');",
+              "  console.log('Login guardado en variables: id=' + json.id + ' username=' + json.username);",
+              "}"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": ["{{base_url}}"],
+          "path": ["products"]
+        },
+        "description": "Obtiene la lista de productos"
+      }
+    },
+    {
+      "name": "GET Suppliers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/suppliers",
+          "host": ["{{base_url}}"],
+          "path": ["suppliers"]
+        },
+        "description": "Obtiene la lista de proveedores"
+      }
+    },
+    {
+      "name": "GET Purchases",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/purchases",
+          "host": ["{{base_url}}"],
+          "path": ["purchases"]
+        },
+        "description": "Obtiene la lista de compras"
+      }
+    },
+    {
+      "name": "Create Purchase (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"supplierId\": 1,\n  \"items\": [\n    { \"productId\": 5, \"quantity\": 2, \"price\": 1.00 }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/purchases",
+          "host": ["{{base_url}}"],
+          "path": ["purchases"]
+        },
+        "description": "Crea una compra. Ajusta supplierId/productId según tus datos."
+      }
+    },
+    {
+      "name": "Delete Purchase (DELETE)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/purchases/:id",
+          "host": ["{{base_url}}"],
+          "path": ["purchases", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID de la compra a borrar"
+            }
+          ]
+        },
+        "description": "Borra la compra con el id especificado. Ajusta la variable :id antes de ejecutar."
+      }
+    }
+  ]
+}

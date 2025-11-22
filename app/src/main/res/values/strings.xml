@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StockApp</string>
+    <string name="product">Producto</string>
+    <string name="category">Categoría</string>
+    <string name="supplier">Proveedor</string>
+    <string name="client">Cliente</string>
+    <string name="purchase">Compra</string>
+    <string name="sale">Venta</string>
+</resources>

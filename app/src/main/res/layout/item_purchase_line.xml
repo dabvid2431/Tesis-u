@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <Spinner
+        android:id="@+id/spinnerLineProduct"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="3"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/etLineQty"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:inputType="number"
+        android:hint="Cant" />
+
+    <EditText
+        android:id="@+id/etLinePrice"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:inputType="numberDecimal"
+        android:hint="Precio" />
+
+    <TextView
+        android:id="@+id/tvLineSubtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="0.00"
+        android:padding="4dp" />
+
+    <ImageButton
+        android:id="@+id/btnRemoveLine"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Eliminar" />
+
+</LinearLayout>
