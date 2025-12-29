@@ -230,7 +230,5 @@ Nota: los tests actuales llaman a `sequelize.sync({ force: true })` y eliminará
 - Sube el `postman_collection_stockapp.json` y `postman_environment_stockapp.json` actualizados.
 - Añade en el repositorio una carpeta `docs/screenshots/` con capturas de la app y la invitación enviada al docente.
 
----
 
-Si quieres, ahora genero el PDF de entrega con instrucciones y un checklist listo para subir a Moodle (puedo usar imágenes placeholders si no tienes capturas a mano). Dime `pdf` para que lo genere, o `no-pdf` si prefieres subirlo tú.
 >>>>>>> 6a01ac2 (Initial commit: proyecto tesis - backend + android + docs)
