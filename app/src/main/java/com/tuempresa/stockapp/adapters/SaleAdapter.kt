@@ -25,7 +25,7 @@ class SaleAdapter(private val sales: List<Sale>) : RecyclerView.Adapter<SaleAdap
         val sale = sales[position]
         holder.id.text = "Venta #${sale.id}"
         holder.date.text = sale.date ?: "No date"
-        holder.total.text = "$${String.format("%.2f", sale.total)}"
+        holder.total.text = "$${String.format(java.util.Locale.getDefault(), "%.2f", sale.total)}"
     }
     
     override fun getItemCount(): Int = sales.size
