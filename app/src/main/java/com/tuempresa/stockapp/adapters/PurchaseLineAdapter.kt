@@ -63,14 +63,20 @@ class PurchaseLineAdapter(
                 onChanged()
             }
 
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {}
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
+                // No-op: required by AdapterView.OnItemSelectedListener
+            }
         })
 
         // quantity watcher
         holder.etQty.setText(line.quantity.toString())
         holder.etQty.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No-op: not needed for quantity changes
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No-op: handling in afterTextChanged
+            }
             override fun afterTextChanged(s: Editable?) {
                 val q = s.toString().toIntOrNull() ?: 0
                 line.quantity = q
@@ -82,8 +88,12 @@ class PurchaseLineAdapter(
         // price watcher
         holder.etPrice.setText(if (line.price == 0.0) "" else String.format(java.util.Locale.getDefault(), "%.2f", line.price))
         holder.etPrice.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No-op: not needed for price changes
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No-op: handling in afterTextChanged
+            }
             override fun afterTextChanged(s: Editable?) {
                 val v = s.toString().trim().replace(',', '.').toDoubleOrNull() ?: 0.0
                 line.price = v
