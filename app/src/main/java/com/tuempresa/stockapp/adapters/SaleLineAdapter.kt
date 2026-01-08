@@ -123,6 +123,6 @@ class SaleLineAdapter(
     fun setProducts(newProducts: List<Product>) {
         products.clear()
         products.addAll(newProducts)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, itemCount)
     }
 }

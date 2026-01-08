@@ -200,6 +200,7 @@ class PurchaseFormFragment : Fragment() {
         }
 
         // populate lines from purchase items
+        val prevSize = purchaseLines.size
         purchaseLines.clear()
         for (item in target.items) {
             // try to match product by name to get productId
@@ -209,7 +210,12 @@ class PurchaseFormFragment : Fragment() {
             purchaseLines.add(pl)
         }
         if (::purchaseLineAdapter.isInitialized) {
-            purchaseLineAdapter.notifyDataSetChanged()
+            val newSize = purchaseLines.size
+            if (prevSize == 0) {
+                if (newSize > 0) purchaseLineAdapter.notifyItemRangeInserted(0, newSize)
+            } else {
+                purchaseLineAdapter.notifyDataSetChanged() // fallback when previous content existed
+            }
         }
         computeTotal()
     }

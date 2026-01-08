@@ -133,8 +133,9 @@ class PurchaseListFragment : Fragment() {
         if (selectedIds.contains(id)) selectedIds.remove(id) else selectedIds.add(id)
         // update FAB visibility
         fabDeletePurchase.visibility = if (selectedIds.isEmpty()) View.GONE else View.VISIBLE
-        // refresh adapter to show selection state
-        recyclerView.adapter?.notifyDataSetChanged()
+        // refresh adapter to show selection state for the affected item only
+        val pos = currentPurchases.indexOfFirst { it.id == id }
+        if (pos >= 0) recyclerView.adapter?.notifyItemChanged(pos)
         // if we just entered selection mode, show a hint
         if (wasEmpty && selectedIds.isNotEmpty()) {
             Snackbar.make(requireView(), "Seleccionado ${selectedIds.size}. Toca otros para seleccionar más o toca el botón eliminar.", Snackbar.LENGTH_LONG).show()
@@ -152,11 +153,10 @@ class PurchaseListFragment : Fragment() {
                 remaining -= 1
                 if (remaining == 0) {
                     fabDeletePurchase.isEnabled = true
-                    // refresh list
+                    // refresh list (observer will update UI)
                     viewModel.fetchPurchases()
                     // update FAB visibility
                     fabDeletePurchase.visibility = if (selectedIds.isEmpty()) View.GONE else View.VISIBLE
-                    recyclerView.adapter?.notifyDataSetChanged()
 
                     if (failedIds.isEmpty()) {
                         Snackbar.make(requireView(), "Eliminado(s) correctamente", Snackbar.LENGTH_SHORT).show()
