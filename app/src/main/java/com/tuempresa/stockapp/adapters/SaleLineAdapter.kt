@@ -105,9 +105,11 @@ class SaleLineAdapter(
         holder.tvSubtotal.text = String.format(java.util.Locale.getDefault(), "%.2f", line.subtotal)
 
         holder.btnRemove.setOnClickListener {
-            lines.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
+            val pos = holder.bindingAdapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+            lines.removeAt(pos)
+            notifyItemRemoved(pos)
+            notifyItemRangeChanged(pos, itemCount)
             onChanged()
         }
     }

@@ -42,7 +42,7 @@
                     android:layout_height="56dp"
                     android:src="@mipmap/ic_launcher_round"
                     android:contentDescription="icon"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:background="@drawable/btn_gradient"
                     android:padding="12dp" />
 

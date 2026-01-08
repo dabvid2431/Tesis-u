@@ -73,7 +73,7 @@
                                 android:src="@drawable/ic_store"
                                 android:background="@drawable/circle_bg_purple"
                                 android:padding="12dp"
-                                android:tint="@android:color/white" />
+                                app:tint="@android:color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                                 android:src="@drawable/ic_add"
                                 android:background="@drawable/circle_bg_purple"
                                 android:padding="12dp"
-                                android:tint="@android:color/white" />
+                                app:tint="@android:color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -158,7 +158,7 @@
                                 android:src="@drawable/ic_shopping_cart"
                                 android:background="@drawable/circle_bg_purple"
                                 android:padding="12dp"
-                                android:tint="@android:color/white" />
+                                app:tint="@android:color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -196,7 +196,7 @@
                                 android:src="@drawable/ic_person"
                                 android:background="@drawable/circle_bg_purple"
                                 android:padding="12dp"
-                                android:tint="@android:color/white" />
+                                app:tint="@android:color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
                                 android:src="@drawable/ic_shopping_cart"
                                 android:background="@drawable/circle_bg_purple"
                                 android:padding="12dp"
-                                android:tint="@android:color/white" />
+                                app:tint="@android:color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -282,7 +282,7 @@
                                 android:src="@drawable/ic_point_of_sale"
                                 android:background="@drawable/circle_bg_purple"
                                 android:padding="12dp"
-                                android:tint="@android:color/white" />
+                                app:tint="@android:color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
