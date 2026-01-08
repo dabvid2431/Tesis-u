@@ -61,8 +61,8 @@ class PurchaseViewModel : ViewModel() {
         }
 
         fun deletePurchase(id: Int, onResult: (Boolean) -> Unit) {
-            repository.deletePurchase(id).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            repository.deletePurchase(id).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {
                         Log.d("PurchaseVM", "deletePurchase success id=$id code=${response.code()}")
                         onResult(true)
@@ -72,7 +72,7 @@ class PurchaseViewModel : ViewModel() {
                         onResult(false)
                     }
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
                     Log.e("PurchaseVM", "deletePurchase network failure id=$id: ${t.message}", t)
                     onResult(false)
                 }

@@ -48,11 +48,11 @@ class SupplierViewModel : ViewModel() {
         }
 
         fun deleteSupplier(id: Int, onResult: (Boolean) -> Unit) {
-            repository.deleteSupplier(id).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            repository.deleteSupplier(id).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     onResult(response.isSuccessful)
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
                     onResult(false)
                 }
             })

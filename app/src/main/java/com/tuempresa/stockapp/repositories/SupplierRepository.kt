@@ -10,5 +10,5 @@ class SupplierRepository {
     fun getSuppliers(): Call<List<Supplier>> = api.getSuppliers()
     fun createSupplier(supplier: Supplier): Call<Supplier> = api.createSupplier(supplier)
     fun updateSupplier(id: Int, supplier: Supplier): Call<Supplier> = api.updateSupplier(id, supplier)
-    fun deleteSupplier(id: Int): Call<Void> = api.deleteSupplier(id)
+    fun deleteSupplier(id: Int): Call<Unit> = api.deleteSupplier(id)
 }

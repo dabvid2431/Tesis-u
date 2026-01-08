@@ -11,5 +11,5 @@ class ProductRepository {
     fun createProduct(product: Product): Call<Product> = api.createProduct(product)
     fun createProductMap(productMap: Map<String, Any>): Call<Product> = api.createProductMap(productMap)
     fun updateProduct(id: Int, product: Product): Call<Product> = api.updateProduct(id, product)
-    fun deleteProduct(id: Int): Call<Void> = api.deleteProduct(id)
+    fun deleteProduct(id: Int): Call<Unit> = api.deleteProduct(id)
 }

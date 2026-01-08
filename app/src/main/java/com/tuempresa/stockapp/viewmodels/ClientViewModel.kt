@@ -87,11 +87,11 @@ class ClientViewModel : ViewModel() {
         }
 
         fun deleteClient(id: Int, onResult: (Boolean) -> Unit) {
-            repository.deleteClient(id).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            repository.deleteClient(id).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     onResult(response.isSuccessful)
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
                     onResult(false)
                 }
             })

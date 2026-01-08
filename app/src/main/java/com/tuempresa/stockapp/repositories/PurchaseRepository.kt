@@ -11,5 +11,5 @@ class PurchaseRepository {
     fun createPurchase(purchase: Purchase): Call<Purchase> = api.createPurchase(purchase)
     fun createPurchaseMap(purchaseMap: Map<String, Any>): Call<Purchase> = api.createPurchaseMap(purchaseMap)
     fun updatePurchase(id: Int, purchase: Purchase): Call<Purchase> = api.updatePurchase(id, purchase)
-    fun deletePurchase(id: Int): Call<Void> = api.deletePurchase(id)
+    fun deletePurchase(id: Int): Call<Unit> = api.deletePurchase(id)
 }

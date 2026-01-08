@@ -10,5 +10,5 @@ class CategoryRepository {
     fun getCategories(): Call<List<Category>> = api.getCategories()
     fun createCategory(category: Category): Call<Category> = api.createCategory(category)
     fun updateCategory(id: Int, category: Category): Call<Category> = api.updateCategory(id, category)
-    fun deleteCategory(id: Int): Call<Void> = api.deleteCategory(id)
+    fun deleteCategory(id: Int): Call<Unit> = api.deleteCategory(id)
 }

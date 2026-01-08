@@ -11,5 +11,5 @@ class ClientRepository {
     fun createClient(client: Client): Call<Client> = api.createClient(client)
     fun createClientMap(clientMap: Map<String, Any>): Call<Client> = api.createClientMap(clientMap)
     fun updateClient(id: Int, client: Client): Call<Client> = api.updateClient(id, client)
-    fun deleteClient(id: Int): Call<Void> = api.deleteClient(id)
+    fun deleteClient(id: Int): Call<Unit> = api.deleteClient(id)
 }
