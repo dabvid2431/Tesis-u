@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tuempresa.stockapp.models.Client
 import com.tuempresa.stockapp.repositories.ClientRepository
+import com.tuempresa.stockapp.repositories.IClientRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ClientViewModel : ViewModel() {
-    private val repository = ClientRepository()
+class ClientViewModel(private val repository: IClientRepository = ClientRepository()) : ViewModel() {
     private val _clients = MutableLiveData<List<Client>>()
     val clients: LiveData<List<Client>> get() = _clients
 

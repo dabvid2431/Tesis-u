@@ -7,7 +7,7 @@ describe('Purchases DELETE behavior', () => {
     await sequelize.sync({ force: true });
     // seed category and supplier and product
     const cat = await (await import('../src/models/index.js')).Category.create({ name: 'DelCat', description: 'c' });
-    const sup = await (await import('../src/models/index.js')).Supplier.create({ name: 'DelSup', email: 'del@sup.com' });
+    await (await import('../src/models/index.js')).Supplier.create({ name: 'DelSup', email: 'del@sup.com' });
     await Product.create({ sku: 'D-001', name: 'DelProd', brand: 'D', purchasePrice: 2.0, salePrice: 3.0, stock: 0, categoryId: cat.id });
   }, 20000);
 

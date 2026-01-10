@@ -4,12 +4,12 @@ import com.tuempresa.stockapp.api.RetrofitClient
 import com.tuempresa.stockapp.models.Client
 import retrofit2.Call
 
-class ClientRepository {
+class ClientRepository : IClientRepository {
     private val api = RetrofitClient.instance
 
-    fun getClients(): Call<List<Client>> = api.getClients()
-    fun createClient(client: Client): Call<Client> = api.createClient(client)
-    fun createClientMap(clientMap: Map<String, Any>): Call<Client> = api.createClientMap(clientMap)
-    fun updateClient(id: Int, client: Client): Call<Client> = api.updateClient(id, client)
-    fun deleteClient(id: Int): Call<Unit> = api.deleteClient(id)
+    override fun getClients(): Call<List<Client>> = api.getClients()
+    override fun createClient(client: Client): Call<Client> = api.createClient(client)
+    override fun createClientMap(clientMap: Map<String, Any>): Call<Client> = api.createClientMap(clientMap)
+    override fun updateClient(id: Int, client: Client): Call<Client> = api.updateClient(id, client)
+    override fun deleteClient(id: Int): Call<Unit> = api.deleteClient(id)
 }

@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tuempresa.stockapp.models.Supplier
 import com.tuempresa.stockapp.repositories.SupplierRepository
+import com.tuempresa.stockapp.repositories.ISupplierRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SupplierViewModel : ViewModel() {
-    private val repository = SupplierRepository()
+class SupplierViewModel(private val repository: ISupplierRepository = SupplierRepository()) : ViewModel() {
     private val _suppliers = MutableLiveData<List<Supplier>>()
+
     val suppliers: LiveData<List<Supplier>> get() = _suppliers
 
     fun fetchSuppliers() {

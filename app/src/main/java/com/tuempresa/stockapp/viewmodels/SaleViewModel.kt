@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tuempresa.stockapp.models.Sale
 import com.tuempresa.stockapp.repositories.SaleRepository
+import com.tuempresa.stockapp.repositories.ISaleRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SaleViewModel : ViewModel() {
-    private val repository = SaleRepository()
+class SaleViewModel(private val repository: ISaleRepository = SaleRepository()) : ViewModel() {
     private val _sales = MutableLiveData<List<Sale>>()
     val sales: LiveData<List<Sale>> get() = _sales
 

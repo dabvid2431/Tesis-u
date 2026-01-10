@@ -4,12 +4,12 @@ import com.tuempresa.stockapp.api.RetrofitClient
 import com.tuempresa.stockapp.models.Product
 import retrofit2.Call
 
-class ProductRepository {
+class ProductRepository : IProductRepository {
     private val api = RetrofitClient.instance
 
-    fun getProducts(): Call<List<Product>> = api.getProducts()
-    fun createProduct(product: Product): Call<Product> = api.createProduct(product)
-    fun createProductMap(productMap: Map<String, Any>): Call<Product> = api.createProductMap(productMap)
-    fun updateProduct(id: Int, product: Product): Call<Product> = api.updateProduct(id, product)
-    fun deleteProduct(id: Int): Call<Unit> = api.deleteProduct(id)
+    override fun getProducts(): Call<List<Product>> = api.getProducts()
+    override fun createProduct(product: Product): Call<Product> = api.createProduct(product)
+    override fun createProductMap(productMap: Map<String, Any>): Call<Product> = api.createProductMap(productMap)
+    override fun updateProduct(id: Int, product: Product): Call<Product> = api.updateProduct(id, product)
+    override fun deleteProduct(id: Int): Call<Unit> = api.deleteProduct(id)
 }

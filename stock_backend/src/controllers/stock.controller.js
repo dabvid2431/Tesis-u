@@ -1,4 +1,4 @@
-import { Product, StockMovement } from "../models/index.js";
+import { Product } from "../models/index.js";
 
 export const getStock = async (req, res) => {
   const products = await Product.findAll();

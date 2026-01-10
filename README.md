@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Tesis-u
-tesis universidad
-=======
 # StockApp — Proyecto de Tesis
 
 Versión entregable del proyecto: backend Node.js + Android cliente para gestionar productos, compras, ventas y stock. Esta documentación explica cómo levantar el proyecto en un entorno limpio, ejecutar seeds/resets, usar Postman y preparar la entrega para la actividad de seguimiento de tesis.
@@ -136,7 +132,6 @@ Notas:
 - El backend se expondrá en `http://localhost:3000`.
 - Si necesitas ajustar credenciales del DB o variables de entorno, modifica `docker-compose.yml` o crea un `.env` para Docker Compose.
 
-
 ## Decisión de seguridad — Modo "no-auth"
 Por elección de uso personal y para facilitar la evaluación, el proyecto incluye soporte para modo sin autenticación (`NO_AUTH=true`). Esto se debe documentar en la entrega. Si desplegas en red pública, cambia `NO_AUTH` a `false` y añade autenticación.
 
@@ -167,28 +162,18 @@ Repositorio: https://github.com/dabvid2431/Tesis-u.git
 Captura: docs/screenshots/invite_jonathandqs.png (sube la imagen al repo o adjúntala en Moodle)
 ```
 
-Si quieres, puedo generar un PDF con screenshots de los pasos y un checklist final listo para subir a Moodle.
-
 ## Archivos importantes
 - `stock_backend/seed.js` — script para poblar datos.
 - `stock_backend/reset-db.js` — recrea DB y ejecuta seed.
 - `postman_collection_stockapp.json` — colección de pruebas.
 
-## Soporte y notas finales
-Si quieres, puedo:
-- Ampliar `seed.js` con productos, proveedores y compras de ejemplo.
-- Crear el `.env.example` (ya incluido) y añadir instrucciones adicionales.
-- Generar un PDF con capturas y pasos de demostración.
-
----
-
-Fecha: 2025-11-22
-
 ## Puertos usados
 - Backend API: `3000` (ruta: `http://localhost:3000/api`).
 - Postgres (si no usas Docker): `5432`.
 
-## Ejecutar tests (integración/basic)
+## Ejecutar tests
+
+### Tests del Backend (Node.js)
 Se incluyen tests básicos en `stock_backend/tests/` usando Jest + Supertest.
 
 Recomendación: crea una base de datos separada para tests (por ejemplo `stockdb_test`) y ejecuta los tests apuntando a esa BD para no sobrescribir datos de desarrollo.
@@ -206,6 +191,84 @@ npm test
 
 Nota: los tests actuales llaman a `sequelize.sync({ force: true })` y eliminarán/crearán tablas en la BD indicada.
 
+### Tests de Android (Kotlin)
+
+#### Tests Unitarios
+Los tests unitarios están en `app/src/test/java/com/tuempresa/stockapp/` y cubren los ViewModels principales:
+
+- `ClientViewModelTest.kt` - Tests completos (fetch, create, createMap, update, delete)
+- `SaleViewModelTest.kt` - Tests completos (fetch, create, createMap, update, delete)
+- `ProductViewModelTest.kt` - Tests de productos
+- `PurchaseViewModelTest.kt` - Tests de compras
+- `CategoryViewModelTest.kt` - Tests de categorías
+- `SupplierViewModelTest.kt` - Tests de proveedores
+- `UserViewModelTest.kt` - Tests de usuarios
+
+**Ejecutar tests unitarios:**
+
+```powershell
+# Desde la raíz del proyecto
+./gradlew :app:testDebugUnitTest
+```
+
+#### Generar Reporte de Cobertura (JaCoCo)
+
+```powershell
+# Generar reporte de cobertura
+./gradlew :app:jacocoTestReport
+
+# Ver reporte HTML
+# Abre: app/build/reports/jacoco/jacocoTestReport/html/index.html
+```
+
+El reporte incluye:
+- Cobertura de código por clase y método
+- Reporte HTML interactivo
+- Reporte XML para integración con Sonar
+
+#### Tests Instrumentados (UI)
+Los tests instrumentados están en `app/src/androidTest/` y requieren un dispositivo o emulador.
+
+```powershell
+./gradlew :app:connectedAndroidTest
+```
+
+## CI/CD
+
+El proyecto incluye un pipeline de CI/CD configurado en `.github/workflows/ci.yml` que:
+
+1. **Ejecuta tests del backend** (Node.js)
+2. **Ejecuta tests unitarios de Android** y genera reporte JaCoCo
+3. **Ejecuta análisis Sonar** (opcional, requiere secrets configurados)
+
+### Configurar Sonar (Opcional)
+
+Para habilitar el análisis de Sonar:
+
+1. Crea un proyecto en [SonarCloud](https://sonarcloud.io) o tu instancia de SonarQube
+2. Agrega los siguientes secrets en GitHub:
+   - `SONAR_HOST_URL`: URL de tu instancia (ej: `https://sonarcloud.io`)
+   - `SONAR_TOKEN`: Token de autenticación
+
+El archivo `sonar-project.properties` está configurado para:
+- Analizar código en `app/src/main/java`
+- Incluir tests en `app/src/test/java`
+- Importar reporte de cobertura JaCoCo
+- Excluir clases generadas (R, BuildConfig, etc.)
+
+## Calidad de Código
+
+### Cobertura de Tests
+- **Objetivo:** 70-80% de cobertura de código
+- **Umbral en CI:** Se verifica automáticamente en el pipeline (actualmente 75%); el build fallará si la cobertura LINE es inferior.
+- **Reporte:** Generado automáticamente con JaCoCo
+- **Ubicación:** `app/build/reports/jacoco/jacocoTestReport/`
+- **Cómo ajustar:** Modifica `--min` en `.github/scripts/check_jacoco_coverage.py` o actualiza el workflow step.
+
+### Análisis Estático
+- **Sonar:** Configurado para análisis continuo
+- **Lint:** Ejecutar con `./gradlew :app:lint`
+
 ## Uso de Postman
 - Importa `postman_collection_stockapp.json` y `postman_environment_stockapp.json`.
 - Ajusta `{{base_url}}` si usas Docker (`http://localhost:3000/api`) o emulador (`http://10.0.2.2:3000/api`).
@@ -217,6 +280,7 @@ Nota: los tests actuales llaman a `sequelize.sync({ force: true })` y eliminará
 - Permisos/privilegios: asegúrate de que el usuario de la BD tenga permiso para crear tablas.
 - Puerto 3000 en uso: cambia `PORT` en `.env` o mata el proceso que usa el puerto.
 - Problemas con el emulador Android: usa `10.0.2.2` para apuntar al `localhost` del host.
+- Tests fallan: verifica que las dependencias estén instaladas (`./gradlew build --refresh-dependencies`)
 
 ## Entrega en Moodle — archivos y comprobaciones que subir
 - Enlace al repositorio privado en GitHub (pegar aquí).
@@ -227,10 +291,12 @@ Nota: los tests actuales llaman a `sequelize.sync({ force: true })` y eliminará
 ## Buenas prácticas antes de entregar
 - Ejecuta `npm run reset-db` y confirma que la app carga datos de ejemplo.
 - Corre `npm test` apuntando a una BD de pruebas para confirmar que los tests pasan.
+- Ejecuta `./gradlew :app:testDebugUnitTest :app:jacocoTestReport` y revisa la cobertura.
 - Sube el `postman_collection_stockapp.json` y `postman_environment_stockapp.json` actualizados.
 - Añade en el repositorio una carpeta `docs/screenshots/` con capturas de la app y la invitación enviada al docente.
+- Verifica que el CI pasa correctamente en GitHub Actions.
 
 ---
 
-Si quieres, ahora genero el PDF de entrega con instrucciones y un checklist listo para subir a Moodle (puedo usar imágenes placeholders si no tienes capturas a mano). Dime `pdf` para que lo genere, o `no-pdf` si prefieres subirlo tú.
->>>>>>> 6a01ac2 (Initial commit: proyecto tesis - backend + android + docs)
+**Fecha de última actualización:** 2025-01-XX
+**Versión:** 1.0

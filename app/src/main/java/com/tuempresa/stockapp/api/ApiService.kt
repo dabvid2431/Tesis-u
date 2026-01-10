@@ -1,8 +1,19 @@
 package com.tuempresa.stockapp.api
 
-import com.tuempresa.stockapp.models.*
+import com.tuempresa.stockapp.models.Product
+import com.tuempresa.stockapp.models.Category
+import com.tuempresa.stockapp.models.Supplier
+import com.tuempresa.stockapp.models.Client
+import com.tuempresa.stockapp.models.Purchase
+import com.tuempresa.stockapp.models.Sale
+import com.tuempresa.stockapp.models.User
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.DELETE
+import retrofit2.http.Path
+import retrofit2.http.Body
 
 interface ApiService {
     // Productos

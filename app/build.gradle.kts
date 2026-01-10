@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("jacoco")
 }
 
 android {
@@ -44,6 +45,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+
+
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
@@ -66,6 +69,50 @@ dependencies {
     
     // Testing
     testImplementation(libs.junit)
+    // Core testing for LiveData (InstantTaskExecutorRule)
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.mockito:mockito-core:4.11.0")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
+    testImplementation("com.squareup.retrofit2:retrofit-mock:2.9.0")
+
+// JaCoCo report helper (already added jacoco toolVersion above)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+// Task to generate JaCoCo report for unit tests (debug variant)
+// Use the Gradle Jacoco report task type from 'org.gradle.testing.jacoco.tasks.JacocoReport'
+val jacocoTestReport by tasks.registering(org.gradle.testing.jacoco.tasks.JacocoReport::class) {
+    dependsOn("testDebugUnitTest")
+
+    val debugTree = fileTree("${project.buildDir}/tmp/kotlin-classes/debug") {
+        exclude("**/R.class", "**/R\$*.class", "**/*\$ViewInjector*", "**/*\$ViewBinder*")
+    }
+    val mainSrc = files("src/main/java", "src/main/kotlin")
+
+    classDirectories.setFrom(files(debugTree))
+    sourceDirectories.setFrom(mainSrc)
+
+    executionData.setFrom(files(
+        "${project.buildDir}/jacoco/testDebugUnitTest.exec",
+        "${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+        "${project.buildDir}/tmp/jacoco/testDebugUnitTest.exec"
+    ))
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(file("${project.buildDir}/reports/jacoco"))
+    }
+}
+
+// Configure JaCoCo extension for unit tests
+tasks.withType(Test::class).configureEach {
+    extensions.configure(org.gradle.testing.jacoco.plugins.JacocoTaskExtension::class) {
+        isIncludeNoLocationClasses = true
+        // Optionally exclude internal JDK classes
+        excludes = listOf("jdk.internal.*")
+    }
 }
