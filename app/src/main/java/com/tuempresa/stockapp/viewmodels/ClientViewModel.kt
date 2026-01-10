@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tuempresa.stockapp.models.Client
 import com.tuempresa.stockapp.repositories.ClientRepository
+import com.tuempresa.stockapp.repositories.IClientRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ClientViewModel : ViewModel() {
-    private val repository = ClientRepository()
+class ClientViewModel(private val repository: IClientRepository = ClientRepository()) : ViewModel() {
     private val _clients = MutableLiveData<List<Client>>()
     val clients: LiveData<List<Client>> get() = _clients
 
@@ -87,11 +87,11 @@ class ClientViewModel : ViewModel() {
         }
 
         fun deleteClient(id: Int, onResult: (Boolean) -> Unit) {
-            repository.deleteClient(id).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            repository.deleteClient(id).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     onResult(response.isSuccessful)
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
                     onResult(false)
                 }
             })

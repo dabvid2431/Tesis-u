@@ -32,7 +32,7 @@ class PurchaseAdapter(
         val purchase = purchases[position]
         holder.id.text = "Compra #${purchase.id}"
         holder.date.text = purchase.date ?: "No date"
-        holder.total.text = "$${String.format("%.2f", purchase.total)}"
+        holder.total.text = "$${String.format(java.util.Locale.getDefault(), "%.2f", purchase.total)}"
         holder.itemView.setOnClickListener { onItemClick(purchase) }
         holder.itemView.setOnLongClickListener {
             onItemLongClick(purchase)

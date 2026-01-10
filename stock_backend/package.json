@@ -8,7 +8,7 @@
     "start": "node src/server.js",
     "reset-db": "node reset-db.js",
     "seed": "node seed.js",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --detectOpenHandles --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,11 @@
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.0.0",
     "jest": "^30.0.5",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.4"

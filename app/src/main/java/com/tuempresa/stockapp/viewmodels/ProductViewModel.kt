@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProductViewModel : ViewModel() {
+class ProductViewModel(private val repository: com.tuempresa.stockapp.repositories.IProductRepository = ProductRepository()) : ViewModel() {
     fun createProductMap(productMap: Map<String, Any>, onResult: (Product?) -> Unit) {
         repository.createProductMap(productMap).enqueue(object : Callback<Product> {
             override fun onResponse(call: Call<Product>, response: Response<Product>) {
@@ -22,7 +22,7 @@ class ProductViewModel : ViewModel() {
             }
         })
     }
-    private val repository = ProductRepository()
+
     private val _products = MutableLiveData<Resource<List<Product>>>()
     val products: LiveData<Resource<List<Product>>> get() = _products
 
@@ -35,12 +35,12 @@ class ProductViewModel : ViewModel() {
                     _products.value = Resource.Success(productList)
                 } else {
                     val err = try { response.errorBody()?.string() } catch (e: Exception) { null }
-                    Log.e("ProductVM", "fetchProducts failed code=${response.code()} error=$err")
+                    try { Log.e("ProductVM", "fetchProducts failed code=${response.code()} error=$err") } catch (_: Throwable) {}
                     _products.value = Resource.Error("Error al obtener productos (code=${response.code()})")
                 }
             }
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.e("ProductVM", "fetchProducts network failure: ${t.message}", t)
+                try { Log.e("ProductVM", "fetchProducts network failure: ${t.message}", t) } catch (_: Throwable) {}
                 _products.value = Resource.Error("Error de red: ${t.message}")
             }
         })
@@ -69,11 +69,11 @@ class ProductViewModel : ViewModel() {
     }
 
     fun deleteProduct(id: Int, onResult: (Boolean) -> Unit) {
-        repository.deleteProduct(id).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+        repository.deleteProduct(id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 onResult(response.isSuccessful)
             }
-            override fun onFailure(call: Call<Void>, t: Throwable) {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
                 onResult(false)
             }
         })

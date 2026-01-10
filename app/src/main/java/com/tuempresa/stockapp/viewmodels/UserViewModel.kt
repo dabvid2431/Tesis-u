@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel : ViewModel() {
+class UserViewModel(private val repository: com.tuempresa.stockapp.repositories.IUserRepository = UserRepository()) : ViewModel() {
     fun createUserMap(userMap: Map<String, String>) {
         _user.value = Resource.Loading()
         repository.createUserMap(userMap).enqueue(object : Callback<User> {
@@ -27,7 +27,6 @@ class UserViewModel : ViewModel() {
             }
         })
     }
-    private val repository = UserRepository()
     private val _user = MutableLiveData<Resource<User>>()
     val user: LiveData<Resource<User>> get() = _user
 

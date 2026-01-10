@@ -7,13 +7,31 @@ export const getPurchases = async (req, res) => {
 
 export const createPurchase = async (req, res) => {
   const { supplierId, items } = req.body; // items = [{ productId, quantity, price }]
+
+  // Basic validation
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(422).json({ error: 'Items are required' });
+  }
+  for (const it of items) {
+    if (!it.productId || typeof it.quantity !== 'number' || it.quantity <= 0) {
+      return res.status(422).json({ error: 'Invalid item quantity or productId' });
+    }
+  }
+
   try {
     const purchase = await Purchase.create({ supplierId, total: 0 });
     let total = 0;
 
     for (const i of items) {
-      await PurchaseItem.create({ purchaseId: purchase.id, ...i });
       const product = await Product.findByPk(i.productId);
+      if (!product) {
+        // Rollback: destroy created items and purchase
+        await Purchase.destroy({ where: { id: purchase.id } });
+        return res.status(422).json({ error: `Product ${i.productId} not found` });
+      }
+
+      await PurchaseItem.create({ purchaseId: purchase.id, ...i });
+
       product.stock += i.quantity;
       await product.save();
 

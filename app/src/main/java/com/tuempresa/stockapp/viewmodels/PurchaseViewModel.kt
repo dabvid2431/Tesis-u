@@ -10,8 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PurchaseViewModel : ViewModel() {
-    private val repository = PurchaseRepository()
+class PurchaseViewModel(private val repository: com.tuempresa.stockapp.repositories.IPurchaseRepository = PurchaseRepository()) : ViewModel() {
     private val _purchases = MutableLiveData<List<Purchase>>()
     val purchases: LiveData<List<Purchase>> get() = _purchases
 
@@ -61,19 +60,19 @@ class PurchaseViewModel : ViewModel() {
         }
 
         fun deletePurchase(id: Int, onResult: (Boolean) -> Unit) {
-            repository.deletePurchase(id).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            repository.deletePurchase(id).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {
-                        Log.d("PurchaseVM", "deletePurchase success id=$id code=${response.code()}")
+                        try { android.util.Log.d("PurchaseVM", "deletePurchase success id=$id code=${response.code()}") } catch (_: Throwable) {}
                         onResult(true)
                     } else {
                         val errBody = try { response.errorBody()?.string() } catch (e: Exception) { null }
-                        Log.e("PurchaseVM", "deletePurchase failed id=$id code=${response.code()} error=$errBody")
+                        try { android.util.Log.e("PurchaseVM", "deletePurchase failed id=$id code=${response.code()} error=$errBody") } catch (_: Throwable) {}
                         onResult(false)
                     }
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.e("PurchaseVM", "deletePurchase network failure id=$id: ${t.message}", t)
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    try { android.util.Log.e("PurchaseVM", "deletePurchase network failure id=$id: ${t.message}", t) } catch (_: Throwable) {}
                     onResult(false)
                 }
             })

@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tuempresa.stockapp.models.Category
 import com.tuempresa.stockapp.repositories.CategoryRepository
+import com.tuempresa.stockapp.repositories.ICategoryRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoryViewModel : ViewModel() {
-    private val repository = CategoryRepository()
+class CategoryViewModel(private val repository: ICategoryRepository = CategoryRepository()) : ViewModel() {
     private val _categories = MutableLiveData<List<Category>>()
+
     val categories: LiveData<List<Category>> get() = _categories
 
     fun fetchCategories() {
@@ -48,11 +49,11 @@ class CategoryViewModel : ViewModel() {
         }
 
         fun deleteCategory(id: Int, onResult: (Boolean) -> Unit) {
-            repository.deleteCategory(id).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            repository.deleteCategory(id).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     onResult(response.isSuccessful)
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
                     onResult(false)
                 }
             })

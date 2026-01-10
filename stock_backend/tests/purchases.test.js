@@ -8,7 +8,7 @@ describe('Purchases API (integration)', () => {
     await sequelize.sync({ force: true });
     // crear datos base
     const cat = await Category.create({ name: 'TestCat', description: 'cat' });
-    const sup = await Supplier.create({ name: 'TestSupplier', email: 'test@supp.com' });
+    await Supplier.create({ name: 'TestSupplier', email: 'test@supp.com' });
     await Product.create({ sku: 'T-001', name: 'TestProd', brand: 'T', purchasePrice: 1.00, salePrice: 2.00, stock: 0, categoryId: cat.id });
   }, 20000);
 

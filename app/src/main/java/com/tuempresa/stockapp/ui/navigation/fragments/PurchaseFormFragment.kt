@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tuempresa.stockapp.adapters.PurchaseLineAdapter
@@ -108,41 +112,13 @@ class PurchaseFormFragment : Fragment() {
         val total = purchaseLines.sumOf { it.quantity * it.price }
         val root = view
         val tvTotal: TextView? = root?.findViewById(R.id.tvTotal)
-        tvTotal?.text = "Total: %.2f".format(total)
+        tvTotal?.text = String.format(java.util.Locale.getDefault(), "Total: %.2f", total)
     }
 
     private fun savePurchase() {
-        // Validar proveedor
-        val selectedSupplierPos = spinnerSupplier.selectedItemPosition
-        val suppliers = supplierViewModel.suppliers.value
-        if (suppliers == null || selectedSupplierPos < 0 || selectedSupplierPos >= suppliers.size) {
-            Toast.makeText(requireContext(), "Selecciona un proveedor", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val supplierId = suppliers[selectedSupplierPos].id
-
-        // Validar líneas de compra
-        if (purchaseLines.isEmpty()) {
-            Toast.makeText(requireContext(), "Agrega al menos una línea de producto", Toast.LENGTH_SHORT).show()
-            return
-        }
-        for ((index, line) in purchaseLines.withIndex()) {
-            if (line.quantity <= 0) {
-                Toast.makeText(requireContext(), "La cantidad en la línea ${index + 1} debe ser mayor a 0", Toast.LENGTH_SHORT).show()
-                return
-            }
-            if (line.price <= 0) {
-                Toast.makeText(requireContext(), "El precio en la línea ${index + 1} debe ser mayor a 0", Toast.LENGTH_SHORT).show()
-                return
-            }
-        }
-
-        // Validar productos
-        if (productList.isEmpty()) {
-            Toast.makeText(requireContext(), "Selecciona un producto", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val productId = productList[0].id
+        val supplierId = getSelectedSupplierId() ?: return
+        if (!validatePurchaseLines()) return
+        if (!validateProductList()) return
 
         // Construir lista para backend
         val itemsList = purchaseLines.map {
@@ -159,30 +135,72 @@ class PurchaseFormFragment : Fragment() {
         )
 
         if (isEditMode && editPurchaseId >= 0) {
-            // build Purchase object for update
-            val itemsForUpdate = purchaseLines.map { line ->
-                // try to get product name from product list
-                val pname = line.productName ?: productList.find { it.id == line.productId }?.name ?: ""
-                com.tuempresa.stockapp.models.PurchaseItem(pname, line.quantity, line.price)
-            }
-            val total = purchaseLines.sumOf { it.subtotal }
-            val purchaseToUpdate = Purchase(id = editPurchaseId, supplierId = supplierId, date = null, total = total, items = itemsForUpdate)
-            purchaseViewModel.updatePurchase(editPurchaseId, purchaseToUpdate) { saved ->
-                if (saved != null) {
-                    Toast.makeText(requireContext(), "Compra actualizada", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
-                } else {
-                    Toast.makeText(requireContext(), "Error al actualizar compra", Toast.LENGTH_SHORT).show()
-                }
-            }
+            performUpdate(supplierId)
         } else {
-            purchaseViewModel.createPurchaseMap(purchaseMap) { saved ->
-                if (saved != null) {
-                    Toast.makeText(requireContext(), "Compra guardada", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
-                } else {
-                    Toast.makeText(requireContext(), "Error al guardar compra", Toast.LENGTH_SHORT).show()
-                }
+            performCreate(purchaseMap)
+        }
+    }
+
+    private fun getSelectedSupplierId(): Int? {
+        val selectedSupplierPos = spinnerSupplier.selectedItemPosition
+        val suppliers = supplierViewModel.suppliers.value
+        if (suppliers == null || selectedSupplierPos < 0 || selectedSupplierPos >= suppliers.size) {
+            Toast.makeText(requireContext(), "Selecciona un proveedor", Toast.LENGTH_SHORT).show()
+            return null
+        }
+        return suppliers[selectedSupplierPos].id
+    }
+
+    private fun validatePurchaseLines(): Boolean {
+        if (purchaseLines.isEmpty()) {
+            Toast.makeText(requireContext(), "Agrega al menos una línea de producto", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        for ((index, line) in purchaseLines.withIndex()) {
+            if (line.quantity <= 0) {
+                Toast.makeText(requireContext(), "La cantidad en la línea ${index + 1} debe ser mayor a 0", Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (line.price <= 0) {
+                Toast.makeText(requireContext(), "El precio en la línea ${index + 1} debe ser mayor a 0", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun validateProductList(): Boolean {
+        if (productList.isEmpty()) {
+            Toast.makeText(requireContext(), "Selecciona un producto", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun performUpdate(supplierId: Int) {
+        val itemsForUpdate = purchaseLines.map { line ->
+            val pname = line.productName ?: productList.find { it.id == line.productId }?.name ?: ""
+            com.tuempresa.stockapp.models.PurchaseItem(pname, line.quantity, line.price)
+        }
+        val total = purchaseLines.sumOf { it.subtotal }
+        val purchaseToUpdate = Purchase(id = editPurchaseId, supplierId = supplierId, date = null, total = total, items = itemsForUpdate)
+        purchaseViewModel.updatePurchase(editPurchaseId, purchaseToUpdate) { saved ->
+            if (saved != null) {
+                Toast.makeText(requireContext(), "Compra actualizada", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
+            } else {
+                Toast.makeText(requireContext(), "Error al actualizar compra", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun performCreate(purchaseMap: Map<String, Any>) {
+        purchaseViewModel.createPurchaseMap(purchaseMap) { saved ->
+            if (saved != null) {
+                Toast.makeText(requireContext(), "Compra guardada", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
+            } else {
+                Toast.makeText(requireContext(), "Error al guardar compra", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -200,6 +218,7 @@ class PurchaseFormFragment : Fragment() {
         }
 
         // populate lines from purchase items
+        val prevSize = purchaseLines.size
         purchaseLines.clear()
         for (item in target.items) {
             // try to match product by name to get productId
@@ -209,7 +228,12 @@ class PurchaseFormFragment : Fragment() {
             purchaseLines.add(pl)
         }
         if (::purchaseLineAdapter.isInitialized) {
-            purchaseLineAdapter.notifyDataSetChanged()
+            val newSize = purchaseLines.size
+            if (prevSize == 0) {
+                if (newSize > 0) purchaseLineAdapter.notifyItemRangeInserted(0, newSize)
+            } else {
+                purchaseLineAdapter.notifyDataSetChanged() // fallback when previous content existed
+            }
         }
         computeTotal()
     }

@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.NavOptions
 import com.tuempresa.stockapp.R
@@ -63,9 +64,12 @@ class LoginFragment : Fragment() {
                         Toast.makeText(requireContext(), "Bienvenido ${user.username}", Toast.LENGTH_SHORT).show()
                         // Guardar rol en SharedPreferences para controlar vistas según permiso
                         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                        prefs.edit().putString("user_role", user.role).putString("username", user.username).apply()
+                        prefs.edit {
+                            putString("user_role", user.role)
+                            putString("username", user.username)
+                        }
 
-                        // Navegación según rol. Limpiamos el back stack para que el vendedor no vea la flecha de volver.
+                        // Navegación según rol. Limpiamos el back stack para que el vendedor no vea la flecha de volver;
                         val navController = findNavController()
                         val options = NavOptions.Builder()
                             .setPopUpTo(R.id.loginFragment, true)

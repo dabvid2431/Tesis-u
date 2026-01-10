@@ -24,7 +24,7 @@ class PurchaseItemAdapter(private val items: List<PurchaseItem>) : RecyclerView.
         val item = items[position]
         holder.productName.text = item.productName
         holder.quantity.text = "x${item.quantity}"
-        holder.price.text = "$${String.format("%.2f", item.price)}"
+        holder.price.text = "$${String.format(java.util.Locale.getDefault(), "%.2f", item.price)}"
     }
 
     override fun getItemCount(): Int = items.size

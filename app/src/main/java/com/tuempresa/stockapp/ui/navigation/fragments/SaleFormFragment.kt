@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.*
+import android.widget.Spinner
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tuempresa.stockapp.adapters.SaleLineAdapter

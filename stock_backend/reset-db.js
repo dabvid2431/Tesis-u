@@ -3,8 +3,9 @@ import { Category, Supplier } from "./src/models/index.js";
 
 async function reset() {
   try {
-    console.log('Dropping all tables...');
-    await sequelize.drop();
+    console.log('Dropping all tables (using queryInterface.dropAllTables)...');
+    const qi = sequelize.getQueryInterface();
+    await qi.dropAllTables();
 
     console.log('Re-creating schema (sync { force: true })...');
     await sequelize.sync({ force: true });
