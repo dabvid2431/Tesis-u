@@ -48,6 +48,41 @@ NO_AUTH=true
 
 ## Pasos para levantar el backend (Windows PowerShell)
 
+### Después de clonar (primeros pasos)
+Después de clonar el repositorio, instala las dependencias del backend y arranca el servidor.
+
+PowerShell (Windows):
+
+```powershell
+cd 'c:\ruta\a\Tesis-u\stock_backend'
+npm install
+npm start
+```
+
+Bash (Linux / macOS):
+
+```bash
+cd /ruta/a/Tesis-u/stock_backend
+npm install
+npm start
+```
+
+También incluí scripts útiles en `scripts/bootstrap.sh` y `scripts/bootstrap.ps1` para automatizar esto:
+
+```bash
+# En Linux/macOS
+./scripts/bootstrap.sh
+
+# En Windows PowerShell
+./scripts/bootstrap.ps1
+```
+
+Nota: si vas a ejecutar los tests crea la BD de pruebas:
+
+```powershell
+psql -U postgres -c "CREATE DATABASE stockdb_test;"
+```
+
 1) Abrir PowerShell y moverse al directorio del backend:
 
 ```powershell
