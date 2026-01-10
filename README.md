@@ -60,8 +60,9 @@ cd 'c:\Users\PC\AndroidStudioProjects\stockapp\stock_backend'
 
 2) Instalar dependencias:
 
-```powershell
-npm install
+``````powershell
+npm ci
+# Para actualizar dependencias y regenerar package-lock.json:
 ```
 
 3) Crear la base de datos PostgreSQL (ejemplo):
