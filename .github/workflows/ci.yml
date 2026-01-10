@@ -10,17 +10,43 @@ jobs:
   backend-tests:
     name: Backend tests (Node)
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: stockdb_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: 'npm'
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 && break
+            sleep 1
+          done
+        env:
+          PATH: /usr/lib/postgresql/15/bin:$PATH
       - name: Install backend dependencies
         working-directory: ./stock_backend
         run: npm ci
       - name: Run backend tests
         working-directory: ./stock_backend
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/stockdb_test
+          NODE_ENV: test
         run: npm test
 
   android-tests:

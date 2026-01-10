@@ -226,6 +226,20 @@ npm test
 
 Nota: los tests actuales llaman a `sequelize.sync({ force: true })` y eliminarán/crearán tablas en la BD indicada.
 
+### Integración continua (GitHub Actions)
+Este repositorio incluye un workflow de GitHub Actions en `.github/workflows/ci.yml` que:
+
+- Ejecuta los **tests del backend** en cada `push` y `pull_request` hacia `main`.
+- Usa `npm ci` para instalaciones reproducibles y **cachea** la cache de npm para acelerar builds.
+- Levanta un servicio **Postgres** (imagen oficial) para ejecutar los tests en un entorno similar al local.
+
+Puedes ver los resultados en la pestaña **Actions** del repositorio; en CI se usan las variables:
+
+- `DATABASE_URL=postgres://postgres:postgres@localhost:5432/stockdb_test`
+- `NODE_ENV=test`
+
+Si quieres personalizar el comportamiento de CI (ej.: versión de Node, umbral de cobertura o jobs adicionales), dime y lo configuro.
+
 ### Tests de Android (Kotlin)
 
 #### Tests Unitarios
