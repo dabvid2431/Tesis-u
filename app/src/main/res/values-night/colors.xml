@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores primarios (igual que tema claro) -->
+    <color name="colorPrimary">#BB86FC</color>
+    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="purple_700">#BB86FC</color>
+
+    <!-- Tema oscuro -->
+    <color name="background_surface">#121212</color>
+    <color name="card_bg">#1F1F1F</color>
+    <color name="background_card">#2C2C2C</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    
+    <!-- Colores para inputs en tema oscuro -->
+    <color name="input_text_color">#FFFFFF</color>
+    <color name="input_hint_color">#757575</color>
+    <color name="input_border_color">#424242</color>
+    <color name="input_focused_border_color">#BB86FC</color>
+    <color name="input_background">#2C2C2C</color>
+</resources>

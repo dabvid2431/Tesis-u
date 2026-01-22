@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.PapelTrack" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         
-        <!-- Estilos para TextInputLayout -->
+        <!-- Estilos para TextInputLayout en modo oscuro -->
         <item name="textInputStyle">@style/PapelTrack_TextInputLayout</item>
         <item name="colorControlActivated">@color/input_focused_border_color</item>
         <item name="colorControlNormal">@color/input_border_color</item>
