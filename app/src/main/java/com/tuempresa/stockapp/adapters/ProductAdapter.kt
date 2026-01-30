@@ -14,6 +14,7 @@ class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.productName)
         val price: TextView = view.findViewById(R.id.productPrice)
+        val stock: TextView = view.findViewById(R.id.productStock)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
@@ -21,10 +22,11 @@ class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
-    holder.name.text = product.name
-    // Format price using locale currency
-    val currency = NumberFormat.getCurrencyInstance(Locale.getDefault())
-    holder.price.text = currency.format(product.price)
+        holder.name.text = product.name
+        // Format price using locale currency
+        val currency = NumberFormat.getCurrencyInstance(Locale.getDefault())
+        holder.price.text = currency.format(product.price)
+        holder.stock.text = product.stock?.toString() ?: "0"
     }
     override fun getItemCount(): Int = products.size
 }

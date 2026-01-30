@@ -7,6 +7,7 @@ import com.tuempresa.stockapp.models.Client
 import com.tuempresa.stockapp.models.Purchase
 import com.tuempresa.stockapp.models.Sale
 import com.tuempresa.stockapp.models.User
+import com.tuempresa.stockapp.models.Notification
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -67,4 +68,24 @@ interface ApiService {
     fun createUser(@Body user: User): Call<User>
     @POST("users")
     fun createUserMap(@Body userMap: Map<String, String>): Call<User>
+
+    // Reportes
+    @GET("reports/sales")
+    fun getSalesReport(): Call<Map<String, Any>>
+
+    @GET("reports/top-products")
+    fun getTopProducts(): Call<List<Map<String, Any>>>
+
+    @GET("reports/low-stock")
+    fun getLowStock(): Call<List<Map<String, Any>>>
+
+    @GET("reports/stock-movements")
+    fun getStockMovements(): Call<List<Map<String, Any>>>
+
+    // Notificaciones
+    @GET("notifications")
+    fun getNotifications(): Call<List<Notification>>
+
+    @PUT("notifications/{id}")
+    fun markNotificationAsRead(@Path("id") id: Int): Call<Notification>
 }

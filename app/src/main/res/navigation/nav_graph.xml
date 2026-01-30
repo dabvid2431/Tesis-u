@@ -103,4 +103,12 @@
         android:id="@+id/saleFormFragment"
         android:name="com.tuempresa.stockapp.ui.navigation.fragments.SaleFormFragment"
         android:label="Agregar Venta" />
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.ReportsFragment"
+        android:label="Reportes" />
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.NotificationsFragment"
+        android:label="Notificaciones" />
 </navigation>

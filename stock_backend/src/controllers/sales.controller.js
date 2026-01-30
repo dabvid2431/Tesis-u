@@ -1,5 +1,5 @@
 import { Sale, SaleItem, Product, StockMovement } from "../models/index.js";
-import { createNotification } from "./notifications.controller.js";
+import { createNotification, checkLowStock } from "./notifications.controller.js";
 
 export const getSales = async (req, res) => {
   const sales = await Sale.findAll({ include: SaleItem });
@@ -19,9 +19,7 @@ export const createSale = async (req, res) => {
       await SaleItem.create({ saleId: sale.id, ...i });
       product.stock -= i.quantity;
       await product.save();
-      if (product.stock < 10) {
-        await createNotification("low_stock", `Stock bajo para ${product.name}: ${product.stock} unidades`);
-      }
+      await checkLowStock(product);
 
       await StockMovement.create({
         productId: i.productId,

@@ -57,6 +57,12 @@ class AdminMenuFragment : Fragment() {
             view.findViewById<MaterialCardView>(R.id.cardSales)?.setOnClickListener {
                 findNavController().navigate(R.id.saleListFragment)
             }
+            view.findViewById<MaterialCardView>(R.id.cardReports)?.setOnClickListener {
+                findNavController().navigate(R.id.reportsFragment)
+            }
+            view.findViewById<MaterialCardView>(R.id.cardNotifications)?.setOnClickListener {
+                findNavController().navigate(R.id.notificationsFragment)
+            }
         }
     }
 }

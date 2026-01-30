@@ -1,5 +1,5 @@
 import { Purchase, PurchaseItem, Product, StockMovement } from "../models/index.js";
-import { createNotification } from "./notifications.controller.js";
+import { createNotification, checkLowStock } from "./notifications.controller.js";
 
 export const getPurchases = async (req, res) => {
   const purchases = await Purchase.findAll({ include: PurchaseItem });
@@ -35,6 +35,7 @@ export const createPurchase = async (req, res) => {
 
       product.stock += i.quantity;
       await product.save();
+      await checkLowStock(product);
 
       await StockMovement.create({
         productId: i.productId,

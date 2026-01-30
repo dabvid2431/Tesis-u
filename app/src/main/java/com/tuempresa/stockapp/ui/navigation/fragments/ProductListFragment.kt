@@ -69,6 +69,21 @@ class ProductListFragment : Fragment() {
             }
         }
         viewModel.fetchProducts()
+        
+        // Verificar stock bajo automáticamente
+        val apiService = com.tuempresa.stockapp.api.RetrofitClient.instance
+        apiService.getNotifications().enqueue(object : retrofit2.Callback<List<com.tuempresa.stockapp.models.Notification>> {
+            override fun onResponse(
+                call: retrofit2.Call<List<com.tuempresa.stockapp.models.Notification>>,
+                response: retrofit2.Response<List<com.tuempresa.stockapp.models.Notification>>
+            ) {
+                // Notificaciones cargadas, nada que hacer aquí
+            }
+
+            override fun onFailure(call: retrofit2.Call<List<com.tuempresa.stockapp.models.Notification>>, t: Throwable) {
+                // Error al cargar notificaciones, ignorar
+            }
+        })
 
         // FAB para agregar producto usando Navigation Component (visible sólo para admin)
         val fab = view.findViewById<FloatingActionButton>(R.id.fabAddProduct)
