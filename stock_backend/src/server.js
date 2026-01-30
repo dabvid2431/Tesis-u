@@ -27,7 +27,7 @@ const startServer = async () => {
     console.log("✅ Conectado a la base de datos");
     // seed defaults if missing
     await maybeSeed();
-    app.listen(PORT, () => console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`));
   } catch (err) {
     console.error("❌ Error al iniciar:", err);
   }

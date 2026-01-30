@@ -1,4 +1,5 @@
 import { Purchase, PurchaseItem, Product, StockMovement } from "../models/index.js";
+import { createNotification } from "./notifications.controller.js";
 
 export const getPurchases = async (req, res) => {
   const purchases = await Purchase.findAll({ include: PurchaseItem });
@@ -47,6 +48,7 @@ export const createPurchase = async (req, res) => {
 
     purchase.total = total;
     await purchase.save();
+    await createNotification("purchase", `Nueva compra registrada por $${total.toFixed(2)}`);
     res.status(201).json(purchase);
   } catch (err) {
     res.status(400).json({ error: err.message });
