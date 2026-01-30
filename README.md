@@ -55,8 +55,9 @@ PowerShell (Windows):
 
 ```powershell
 cd 'c:\ruta\a\Tesis-u\stock_backend'
-npm install
+npm ci
 npm start
+# Nota: usa `npm install` solo si vas a actualizar dependencias y commitear el `package-lock.json`.
 ```
 
 Bash (Linux / macOS):
@@ -92,7 +93,9 @@ cd 'c:\Users\PC\AndroidStudioProjects\stockapp\stock_backend'
 2) Instalar dependencias:
 
 ```powershell
-npm install
+npm ci
+# Para actualizar dependencias y regenerar package-lock.json:
+# npm install
 ```
 
 3) Crear la base de datos PostgreSQL (ejemplo):

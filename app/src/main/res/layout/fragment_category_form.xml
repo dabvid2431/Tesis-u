@@ -40,25 +40,39 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Nombre"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextCategoryName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Descripción"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextCategoryDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
-                            android:minLines="3" />
+                            android:minLines="3"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button

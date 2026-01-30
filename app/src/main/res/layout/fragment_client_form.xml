@@ -40,49 +40,77 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Nombre"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextClientName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName" />
+                            android:inputType="textPersonName"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Teléfono"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextClientPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="phone" />
+                            android:inputType="phone"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Email"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextClientEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Dirección"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextClientAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPostalAddress" />
+                            android:inputType="textPostalAddress"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button

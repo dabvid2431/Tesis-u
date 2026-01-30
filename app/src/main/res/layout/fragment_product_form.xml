@@ -78,13 +78,19 @@
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Nombre"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextProductName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName" />
+                            android:inputType="textPersonName"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Descripción (mantener id existente editTextProductDescription) -->
@@ -93,14 +99,20 @@
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:hint="Descripción"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextProductDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine"
-                            android:minLines="2" />
+                            android:minLines="2"
+                            android:textColor="@color/input_text_color"
+                            android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Precios y stock: fila -->
@@ -109,7 +121,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="3"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
@@ -117,13 +129,19 @@
                             android:layout_weight="1"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:hint="Precio"
-                            android:layout_marginEnd="6dp">
+                            android:layout_marginEnd="6dp"
+                            app:boxStrokeColor="@color/input_border_color"
+                            app:boxStrokeWidth="2dp"
+                            app:boxBackgroundColor="@color/input_background"
+                            app:hintTextColor="@color/input_hint_color">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editTextProductPrice"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="numberDecimal" />
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/input_text_color"
+                                android:textColorHint="@color/input_hint_color" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -133,13 +151,19 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:hint="Precio venta"
                             android:layout_marginEnd="6dp"
-                            android:visibility="gone"> <!-- oculto si no lo usas -->
+                            android:visibility="gone"
+                            app:boxStrokeColor="@color/input_border_color"
+                            app:boxStrokeWidth="2dp"
+                            app:boxBackgroundColor="@color/input_background"
+                            app:hintTextColor="@color/input_hint_color">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etSalePrice"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="numberDecimal" />
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/input_text_color"
+                                android:textColorHint="@color/input_hint_color" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -147,13 +171,19 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:hint="Stock">
+                            android:hint="Stock"
+                            app:boxStrokeColor="@color/input_border_color"
+                            app:boxStrokeWidth="2dp"
+                            app:boxBackgroundColor="@color/input_background"
+                            app:hintTextColor="@color/input_hint_color">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editTextProductStock"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:textColor="@color/input_text_color"
+                                android:textColorHint="@color/input_hint_color" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
@@ -170,7 +200,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
 
                         <Spinner
                             android:id="@+id/spinnerCategory"
@@ -191,7 +225,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/input_hint_color">
 
                         <Spinner
                             android:id="@+id/spinnerSupplier"
