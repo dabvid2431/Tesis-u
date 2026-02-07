@@ -30,12 +30,18 @@ class AdminMenuFragment : Fragment() {
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val role = prefs.getString("user_role", "")
         if (role == "vendedor") {
-            // Menú reducido: Ventas y Clientes
+            // Menú ampliado para vendedor: Ventas, Clientes, Productos (consulta) y Notificaciones
             view.findViewById<View>(R.id.buttonVendorSales)?.setOnClickListener {
                 findNavController().navigate(R.id.saleListFragment)
             }
             view.findViewById<View>(R.id.buttonVendorClients)?.setOnClickListener {
                 findNavController().navigate(R.id.clientListFragment)
+            }
+            view.findViewById<View>(R.id.buttonVendorProducts)?.setOnClickListener {
+                findNavController().navigate(R.id.productListFragment)
+            }
+            view.findViewById<View>(R.id.buttonVendorNotifications)?.setOnClickListener {
+                findNavController().navigate(R.id.notificationsFragment)
             }
         } else {
             // Menú admin completo: enlazar tarjetas

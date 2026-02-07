@@ -69,16 +69,13 @@ class LoginFragment : Fragment() {
                             putString("username", user.username)
                         }
 
-                        // Navegación según rol. Limpiamos el back stack para que el vendedor no vea la flecha de volver;
+                        // Navegación al menú correspondiente (admin o vendedor)
+                        // AdminMenuFragment muestra el layout correcto según el rol
                         val navController = findNavController()
                         val options = NavOptions.Builder()
                             .setPopUpTo(R.id.loginFragment, true)
                             .build()
-                        if (user.role == "admin") {
-                            navController.navigate(R.id.action_loginFragment_to_adminMenuFragment, null, options)
-                        } else {
-                            navController.navigate(R.id.action_loginFragment_to_saleListFragment, null, options)
-                        }
+                        navController.navigate(R.id.action_loginFragment_to_adminMenuFragment, null, options)
                     }
                 }
                 is Resource.Error -> {

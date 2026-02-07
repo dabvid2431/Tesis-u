@@ -35,18 +35,17 @@ class SaleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        // Setup toolbar. Si el usuario es vendedor no mostramos la flecha de volver
+        // Setup toolbar. Admin puede volver, vendedor ve icono de menú
         val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSaleList)
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val role = prefs.getString("user_role", "")
-        if (role == "admin") {
-            toolbar.setNavigationOnClickListener {
+        toolbar.setNavigationOnClickListener {
+            if (role == "admin") {
                 findNavController().navigateUp()
+            } else {
+                // Vendedor: volver al panel principal
+                findNavController().navigate(R.id.adminMenuFragment)
             }
-        } else {
-            // Ocultar icono de navegación para vendedores u otros roles
-            toolbar.navigationIcon = null
-            toolbar.setNavigationOnClickListener(null)
         }
         
         // Initialize views

@@ -89,7 +89,8 @@ class ProductListFragment : Fragment() {
             }
         })
 
-        // FAB para agregar producto usando Navigation Component (visible sólo para admin)
+        // FAB para agregar producto (visible sólo para admin)
+        // Vendedores pueden ver productos pero no crear/editar
         val fab = view.findViewById<FloatingActionButton>(R.id.fabAddProduct)
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val role = prefs.getString("user_role", "")
@@ -104,6 +105,12 @@ class ProductListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.product_menu, menu)
+        // Ocultar opción de exportar para vendedores
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val role = prefs.getString("user_role", "")
+        if (role != "admin") {
+            menu.findItem(R.id.action_export)?.isVisible = false
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 

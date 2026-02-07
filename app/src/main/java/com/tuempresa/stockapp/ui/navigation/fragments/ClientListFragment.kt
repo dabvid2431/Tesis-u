@@ -61,16 +61,17 @@ class ClientListFragment : Fragment() {
             }
         }
         
-        // Mostrar/ocultar FAB según rol (solo admin puede crear clientes)
+        // FAB visible para admin y vendedor (ambos pueden crear clientes)
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val role = prefs.getString("user_role", "")
-        if (role != "admin") {
-            fabAddClient.visibility = View.GONE
-        } else {
+        if (role == "admin" || role == "vendedor") {
+            fabAddClient.visibility = View.VISIBLE
             fabAddClient.setOnClickListener {
                 // Navigate to add client form
                 findNavController().navigate(R.id.action_clientListFragment_to_clientFormFragment)
             }
+        } else {
+            fabAddClient.visibility = View.GONE
         }
         
         // Load clients

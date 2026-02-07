@@ -33,4 +33,20 @@
         android:text="Clientes"
         android:layout_marginTop="8dp" />
 
+    <Button
+        android:id="@+id/buttonVendorProducts"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Productos (Consulta)"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/buttonVendorNotifications"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notificaciones"
+        android:layout_marginTop="8dp" />
+
 </LinearLayout>
