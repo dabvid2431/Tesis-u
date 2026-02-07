@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_productListFragment_to_productFormFragment"
             app:destination="@id/productFormFragment" />
+        <action
+            android:id="@+id/action_productListFragment_to_reportsExportFragment"
+            app:destination="@id/reportsExportFragment" />
     </fragment>
     <fragment
         android:id="@+id/productFormFragment"
@@ -96,6 +99,9 @@
         android:name="com.tuempresa.stockapp.ui.navigation.fragments.SaleListFragment"
         android:label="Ventas">
         <action
+            android:id="@+id/action_saleListFragment_to_reportsExportFragment"
+            app:destination="@id/reportsExportFragment" />
+        <action
             android:id="@+id/action_saleListFragment_to_saleFormFragment"
             app:destination="@id/saleFormFragment" />
     </fragment>
@@ -107,6 +113,10 @@
         android:id="@+id/reportsFragment"
         android:name="com.tuempresa.stockapp.ui.navigation.fragments.ReportsFragment"
         android:label="Reportes" />
+    <fragment
+        android:id="@+id/reportsExportFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.ReportsExportFragment"
+        android:label="Exportar Reportes" />
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.tuempresa.stockapp.ui.navigation.fragments.NotificationsFragment"

@@ -3,6 +3,9 @@ package com.tuempresa.stockapp.ui.navigation.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -25,6 +28,7 @@ class SaleListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_sale_list, container, false)
     }
 
@@ -82,5 +86,20 @@ class SaleListFragment : Fragment() {
         
         // Load sales
         viewModel.fetchSales()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.sale_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_export -> {
+                findNavController().navigate(R.id.action_saleListFragment_to_reportsExportFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

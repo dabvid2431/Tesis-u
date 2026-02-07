@@ -3,6 +3,9 @@ package com.tuempresa.stockapp.ui.navigation.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -28,6 +31,7 @@ class ProductListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.fragment_product_list, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -95,6 +99,21 @@ class ProductListFragment : Fragment() {
             fab.setOnClickListener {
                 findNavController().navigate(R.id.productFormFragment)
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.product_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_export -> {
+                findNavController().navigate(R.id.action_productListFragment_to_reportsExportFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

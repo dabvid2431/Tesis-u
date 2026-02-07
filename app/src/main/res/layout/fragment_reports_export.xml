@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exportar Reportes y Backup"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp"
+            android:contentDescription="Exportar Reportes y Backup"
+            android:accessibilityHeading="true" />
+
+        <!-- Sección de Productos -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reportes de Productos"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:contentDescription="Sección de reportes de productos"
+                    android:accessibilityHeading="true" />
+
+                <Button
+                    android:id="@+id/btnExportProductsPdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Exportar a PDF"
+                    android:drawableLeft="@android:drawable/ic_menu_save"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Exportar productos a PDF"
+                    android:minHeight="48dp" />
+
+                <Button
+                    android:id="@+id/btnExportProductsExcel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Exportar a CSV/Excel"
+                    android:drawableLeft="@android:drawable/ic_menu_save"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Exportar productos a CSV compatible con Excel"
+                    android:minHeight="48dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sección de Ventas -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reportes de Ventas"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:contentDescription="Sección de reportes de ventas"
+                    android:accessibilityHeading="true" />
+
+                <Button
+                    android:id="@+id/btnExportSalesPdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Exportar a PDF"
+                    android:drawableLeft="@android:drawable/ic_menu_save"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Exportar ventas a PDF"
+                    android:minHeight="48dp" />
+
+                <Button
+                    android:id="@+id/btnExportSalesExcel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Exportar a CSV/Excel"
+                    android:drawableLeft="@android:drawable/ic_menu_save"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Exportar ventas a CSV compatible con Excel"
+                    android:minHeight="48dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sección de Backup en la Nube -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Backup en la Nube"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:contentDescription="Sección de backup en la nube"
+                    android:accessibilityHeading="true" />
+
+                <Button
+                    android:id="@+id/btnBackupCloud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Realizar Backup"
+                    android:drawableLeft="@android:drawable/ic_menu_upload"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Realizar backup de la base de datos en la nube"
+                    android:minHeight="48dp" />
+
+                <Button
+                    android:id="@+id/btnRestoreCloud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Restaurar desde Backup"
+                    android:drawableLeft="@android:drawable/ic_menu_revert"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Restaurar base de datos desde backup en la nube"
+                    android:minHeight="48dp" />
+
+                <Button
+                    android:id="@+id/btnListBackups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ver Backups Disponibles"
+                    android:drawableLeft="@android:drawable/ic_menu_view"
+                    android:drawablePadding="8dp"
+                    android:contentDescription="Ver lista de backups disponibles en la nube"
+                    android:minHeight="48dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Progress Bar y Estado -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:contentDescription="Procesando solicitud" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listo para exportar"
+            android:textSize="14sp"
+            android:paddingTop="16dp"
+            android:gravity="center"
+            android:contentDescription="Estado de las operaciones"
+            android:accessibilityLiveRegion="polite" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("jacoco")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -41,6 +42,20 @@ android {
         // Enable generation of BuildConfig fields so BuildConfig.BASE_URL is available
         buildConfig = true
     }
+    
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/NOTICE",
+                "META-INF/LICENSE",
+                "META-INF/DEPENDENCIES",
+                "META-INF/INDEX.LIST",
+                "META-INF/io.netty.versions.properties",
+                "META-INF/*.kotlin_module",
+                "META-INF/versions/9/module-info.class"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -66,6 +81,19 @@ dependencies {
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    
+    // Security - Encrypted SharedPreferences
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    
+    // PDF Generation
+    implementation("com.itextpdf:itext7-core:7.2.5")
+    
+    // CSV es suficiente - Excel (Apache POI) removido por incompatibilidad con Android API 24
+    
+    // Firebase for Cloud Backup
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
     
     // Testing
     testImplementation(libs.junit)
