@@ -9,6 +9,7 @@ import stockRoutes from "./stock.routes.js";
 import usersRoutes from "./users.routes.js";
 import reportsRoutes from "./reports.routes.js";
 import notificationsRoutes from "./notifications.routes.js";
+import backupRoutes from "./backup.routes.js";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use("/sales", salesRoutes);
 router.use("/stock", stockRoutes);
 router.use("/reports", reportsRoutes);
 router.use("/notifications", notificationsRoutes);
+router.use("/backup", backupRoutes);
 router.use(usersRoutes);
 
 export default router;

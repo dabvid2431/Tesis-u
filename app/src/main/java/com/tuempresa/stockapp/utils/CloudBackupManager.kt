@@ -1,26 +1,42 @@
 package com.tuempresa.stockapp.utils
 
 import android.content.Context
-import android.net.Uri
+import android.os.Environment
 import android.util.Log
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
+import com.tuempresa.stockapp.api.RetrofitClient
+import com.tuempresa.stockapp.models.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Gestor de copias de seguridad en Firebase Storage
- * Permite backup y restore de la base de datos en la nube
+ * Gestor de copias de seguridad en almacenamiento local
+ * Descarga todos los datos del backend y los guarda como JSON
  */
 object CloudBackupManager {
     
     private const val TAG = "CloudBackupManager"
-    private const val BACKUP_FOLDER = "backups"
-    private val storage = Firebase.storage
+    private const val BACKUP_FOLDER = "StockAppBackups"
+    private val gson = Gson()
     
     /**
-     * Realiza un backup de la base de datos a Firebase Storage
+     * Obtiene el directorio de backups, creándolo si no existe
+     */
+    private fun getBackupsDirectory(context: Context): File {
+        val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val backupsDir = File(documentsDir, BACKUP_FOLDER)
+        if (!backupsDir.exists()) {
+            backupsDir.mkdirs()
+        }
+        return backupsDir
+    }
+    
+    /**
+     * Realiza un backup de todos los datos del backend al almacenamiento local
      * @param context Contexto de la aplicación
      * @param onSuccess Callback cuando el backup se completa exitosamente
      * @param onFailure Callback cuando el backup falla
@@ -31,36 +47,115 @@ object CloudBackupManager {
         onFailure: (Exception) -> Unit
     ) {
         try {
-            // Obtener el archivo de la base de datos
-            val dbPath = context.getDatabasePath("stockdb")
-            if (!dbPath.exists()) {
-                onFailure(Exception("Base de datos no encontrada"))
-                return
+            Log.d(TAG, "Iniciando descarga de datos del backend...")
+            
+            // Contenedor para todos los datos
+            var products: List<Product>? = null
+            var categories: List<Category>? = null
+            var suppliers: List<Supplier>? = null
+            var clients: List<Client>? = null
+            var sales: List<Sale>? = null
+            var purchases: List<Purchase>? = null
+            
+            var completedRequests = 0
+            val totalRequests = 6
+            
+            fun checkCompletion() {
+                completedRequests++
+                if (completedRequests == totalRequests) {
+                    // Todos los datos descargados, crear backup
+                    val backupData = BackupData(
+                        timestamp = System.currentTimeMillis(),
+                        products = products ?: emptyList(),
+                        categories = categories ?: emptyList(),
+                        suppliers = suppliers ?: emptyList(),
+                        clients = clients ?: emptyList(),
+                        sales = sales ?: emptyList(),
+                        purchases = purchases ?: emptyList()
+                    )
+                    
+                    saveBackupToLocalStorage(context, backupData, onSuccess, onFailure)
+                }
             }
             
-            // Crear nombre único para el backup
-            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-            val backupFileName = "stockdb_backup_$timestamp.db"
+            // Descargar productos
+            RetrofitClient.instance.getProducts().enqueue(object : Callback<List<Product>> {
+                override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+                    products = response.body() ?: emptyList()
+                    Log.d(TAG, "Productos descargados: ${products?.size}")
+                    checkCompletion()
+                }
+                override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                    Log.e(TAG, "Error descargando productos: ${t.message}")
+                    onFailure(Exception("Error descargando productos: ${t.message}"))
+                }
+            })
             
-            // Referencia en Firebase Storage
-            val storageRef = storage.reference
-            val backupRef = storageRef.child("$BACKUP_FOLDER/$backupFileName")
+            // Descargar categorías
+            RetrofitClient.instance.getCategories().enqueue(object : Callback<List<Category>> {
+                override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                    categories = response.body() ?: emptyList()
+                    Log.d(TAG, "Categorías descargadas: ${categories?.size}")
+                    checkCompletion()
+                }
+                override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                    Log.e(TAG, "Error descargando categorías: ${t.message}")
+                    onFailure(Exception("Error descargando categorías: ${t.message}"))
+                }
+            })
             
-            // Subir archivo
-            val fileUri = Uri.fromFile(dbPath)
-            backupRef.putFile(fileUri)
-                .addOnSuccessListener {
-                    Log.d(TAG, "Backup exitoso: $backupFileName")
-                    onSuccess(backupFileName)
+            // Descargar proveedores
+            RetrofitClient.instance.getSuppliers().enqueue(object : Callback<List<Supplier>> {
+                override fun onResponse(call: Call<List<Supplier>>, response: Response<List<Supplier>>) {
+                    suppliers = response.body() ?: emptyList()
+                    Log.d(TAG, "Proveedores descargados: ${suppliers?.size}")
+                    checkCompletion()
                 }
-                .addOnFailureListener { exception ->
-                    Log.e(TAG, "Error en backup: ${exception.message}")
-                    onFailure(exception)
+                override fun onFailure(call: Call<List<Supplier>>, t: Throwable) {
+                    Log.e(TAG, "Error descargando proveedores: ${t.message}")
+                    onFailure(Exception("Error descargando proveedores: ${t.message}"))
                 }
-                .addOnProgressListener { taskSnapshot ->
-                    val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount)
-                    Log.d(TAG, "Progreso del backup: $progress%")
+            })
+            
+            // Descargar clientes
+            RetrofitClient.instance.getClients().enqueue(object : Callback<List<Client>> {
+                override fun onResponse(call: Call<List<Client>>, response: Response<List<Client>>) {
+                    clients = response.body() ?: emptyList()
+                    Log.d(TAG, "Clientes descargados: ${clients?.size}")
+                    checkCompletion()
                 }
+                override fun onFailure(call: Call<List<Client>>, t: Throwable) {
+                    Log.e(TAG, "Error descargando clientes: ${t.message}")
+                    onFailure(Exception("Error descargando clientes: ${t.message}"))
+                }
+            })
+            
+            // Descargar ventas
+            RetrofitClient.instance.getSales().enqueue(object : Callback<List<Sale>> {
+                override fun onResponse(call: Call<List<Sale>>, response: Response<List<Sale>>) {
+                    sales = response.body() ?: emptyList()
+                    Log.d(TAG, "Ventas descargadas: ${sales?.size}")
+                    checkCompletion()
+                }
+                override fun onFailure(call: Call<List<Sale>>, t: Throwable) {
+                    Log.e(TAG, "Error descargando ventas: ${t.message}")
+                    onFailure(Exception("Error descargando ventas: ${t.message}"))
+                }
+            })
+            
+            // Descargar compras
+            RetrofitClient.instance.getPurchases().enqueue(object : Callback<List<Purchase>> {
+                override fun onResponse(call: Call<List<Purchase>>, response: Response<List<Purchase>>) {
+                    purchases = response.body() ?: emptyList()
+                    Log.d(TAG, "Compras descargadas: ${purchases?.size}")
+                    checkCompletion()
+                }
+                override fun onFailure(call: Call<List<Purchase>>, t: Throwable) {
+                    Log.e(TAG, "Error descargando compras: ${t.message}")
+                    onFailure(Exception("Error descargando compras: ${t.message}"))
+                }
+            })
+            
         } catch (e: Exception) {
             Log.e(TAG, "Error preparando backup: ${e.message}")
             onFailure(e)
@@ -68,31 +163,72 @@ object CloudBackupManager {
     }
     
     /**
-     * Lista todos los backups disponibles en Firebase Storage
+     * Guarda los datos de backup en almacenamiento local
+     */
+    private fun saveBackupToLocalStorage(
+        context: Context,
+        backupData: BackupData,
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        try {
+            // Convertir a JSON
+            val jsonData = gson.toJson(backupData)
+            
+            // Crear nombre único para el backup
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val backupFileName = "stockapp_backup_$timestamp.json"
+            
+            // Guardar en almacenamiento local
+            val backupsDir = getBackupsDirectory(context)
+            val backupFile = File(backupsDir, backupFileName)
+            backupFile.writeText(jsonData)
+            
+            Log.d(TAG, "✅ Backup guardado exitosamente: ${backupFile.absolutePath}")
+            onSuccess(backupFileName)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Error guardando backup: ${e.message}")
+            onFailure(e)
+        }
+    }
+    
+    /**
+     * Lista todos los backups disponibles en almacenamiento local
      * @param onSuccess Callback con la lista de nombres de backups
      * @param onFailure Callback cuando la operación falla
      */
     fun listBackups(
+        context: Context,
         onSuccess: (List<String>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val storageRef = storage.reference
-        val backupRef = storageRef.child(BACKUP_FOLDER)
-        
-        backupRef.listAll()
-            .addOnSuccessListener { listResult ->
-                val backupNames = listResult.items.map { it.name }
-                Log.d(TAG, "Backups encontrados: ${backupNames.size}")
-                onSuccess(backupNames)
+        try {
+            val backupsDir = getBackupsDirectory(context)
+            
+            if (!backupsDir.exists()) {
+                Log.d(TAG, "Directorio de backups no existe, creándolo...")
+                backupsDir.mkdirs()
+                onSuccess(emptyList())
+                return
             }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Error listando backups: ${exception.message}")
-                onFailure(exception)
-            }
+            
+            val backupFiles = backupsDir.listFiles { file ->
+                file.isFile && file.extension == "json"
+            }?.map { it.name }?.sortedDescending() ?: emptyList()
+            
+            Log.d(TAG, "Backups encontrados: ${backupFiles.size}")
+            onSuccess(backupFiles)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error listando backups: ${e.message}")
+            onFailure(e)
+        }
     }
     
     /**
-     * Restaura una base de datos desde un backup en Firebase Storage
+     * Restaura datos desde un backup en almacenamiento local
+     * ADVERTENCIA: Esto eliminará todos los datos actuales del backend
      * @param context Contexto de la aplicación
      * @param backupFileName Nombre del archivo de backup
      * @param onSuccess Callback cuando la restauración se completa
@@ -105,39 +241,29 @@ object CloudBackupManager {
         onFailure: (Exception) -> Unit
     ) {
         try {
-            val storageRef = storage.reference
-            val backupRef = storageRef.child("$BACKUP_FOLDER/$backupFileName")
+            val backupsDir = getBackupsDirectory(context)
+            val backupFile = File(backupsDir, backupFileName)
             
-            // Archivo temporal para descargar
-            val tempFile = File.createTempFile("restore", ".db", context.cacheDir)
+            if (!backupFile.exists()) {
+                onFailure(Exception("Backup no encontrado: $backupFileName"))
+                return
+            }
             
-            backupRef.getFile(tempFile)
-                .addOnSuccessListener {
-                    try {
-                        // Cerrar la base de datos actual (si está abierta)
-                        // Nota: Esto debería hacerse desde el ViewModel o Repository
-                        
-                        // Reemplazar base de datos
-                        val dbPath = context.getDatabasePath("stockdb")
-                        tempFile.copyTo(dbPath, overwrite = true)
-                        tempFile.delete()
-                        
-                        Log.d(TAG, "Restauración exitosa desde: $backupFileName")
-                        onSuccess()
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error copiando base de datos: ${e.message}")
-                        onFailure(e)
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e(TAG, "Error descargando backup: ${exception.message}")
-                    tempFile.delete()
-                    onFailure(exception)
-                }
-                .addOnProgressListener { taskSnapshot ->
-                    val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount)
-                    Log.d(TAG, "Progreso de restauración: $progress%")
-                }
+            // Leer JSON
+            val jsonData = backupFile.readText()
+            val backupData = gson.fromJson(jsonData, BackupData::class.java)
+            
+            Log.d(TAG, "Backup cargado. Restaurando datos...")
+            Log.d(TAG, "Productos: ${backupData.products.size}")
+            Log.d(TAG, "Categorías: ${backupData.categories.size}")
+            Log.d(TAG, "Proveedores: ${backupData.suppliers.size}")
+            Log.d(TAG, "Clientes: ${backupData.clients.size}")
+            Log.d(TAG, "Ventas: ${backupData.sales.size}")
+            Log.d(TAG, "Compras: ${backupData.purchases.size}")
+            
+            // Restaurar datos al backend
+            restoreDataToBackend(backupData, onSuccess, onFailure)
+            
         } catch (e: Exception) {
             Log.e(TAG, "Error preparando restauración: ${e.message}")
             onFailure(e)
@@ -145,28 +271,66 @@ object CloudBackupManager {
     }
     
     /**
-     * Elimina un backup específico de Firebase Storage
+     * Restaura los datos al backend usando el endpoint /api/backup/restore
+     */
+    private fun restoreDataToBackend(
+        backupData: BackupData,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        Log.d(TAG, "Enviando datos al backend para restauración...")
+        
+        RetrofitClient.instance.restoreBackup(backupData).enqueue(object : Callback<Map<String, Any>> {
+            override fun onResponse(call: Call<Map<String, Any>>, response: Response<Map<String, Any>>) {
+                if (response.isSuccessful) {
+                    Log.d(TAG, "✅ Restauración completada exitosamente")
+                    val result = response.body()
+                    Log.d(TAG, "Respuesta del servidor: $result")
+                    onSuccess()
+                } else {
+                    val error = "Error del servidor: ${response.code()} - ${response.message()}"
+                    Log.e(TAG, error)
+                    onFailure(Exception(error))
+                }
+            }
+            
+            override fun onFailure(call: Call<Map<String, Any>>, t: Throwable) {
+                Log.e(TAG, "❌ Error restaurando al backend: ${t.message}")
+                onFailure(Exception("Error de conexión: ${t.message}"))
+            }
+        })
+    }
+    
+    /**
+     * Elimina un backup específico del almacenamiento local
      * @param backupFileName Nombre del archivo de backup a eliminar
      * @param onSuccess Callback cuando la eliminación se completa
      * @param onFailure Callback cuando la eliminación falla
      */
     fun deleteBackup(
+        context: Context,
         backupFileName: String,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val storageRef = storage.reference
-        val backupRef = storageRef.child("$BACKUP_FOLDER/$backupFileName")
-        
-        backupRef.delete()
-            .addOnSuccessListener {
-                Log.d(TAG, "Backup eliminado: $backupFileName")
-                onSuccess()
+        try {
+            val backupsDir = getBackupsDirectory(context)
+            val backupFile = File(backupsDir, backupFileName)
+            
+            if (backupFile.exists()) {
+                if (backupFile.delete()) {
+                    Log.d(TAG, "Backup eliminado: $backupFileName")
+                    onSuccess()
+                } else {
+                    onFailure(Exception("No se pudo eliminar el archivo"))
+                }
+            } else {
+                onFailure(Exception("Backup no encontrado"))
             }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Error eliminando backup: ${exception.message}")
-                onFailure(exception)
-            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error eliminando backup: ${e.message}")
+            onFailure(e)
+        }
     }
     
     /**
@@ -195,3 +359,4 @@ object CloudBackupManager {
         }
     }
 }
+

@@ -333,12 +333,18 @@ class ReportsExportFragment : Fragment() {
         showProgress("Obteniendo lista de backups...")
         
         CloudBackupManager.listBackups(
+            requireContext(),
             onSuccess = { backups ->
                 hideProgress()
-                val backupList = backups.joinToString("\n")
-                showStatus("Backups disponibles:\n$backupList")
-                AccessibilityHelper.announceForAccessibility(tvStatus, "Se encontraron ${backups.size} backups")
-                Toast.makeText(context, "Backups: ${backups.size}", Toast.LENGTH_SHORT).show()
+                if (backups.isEmpty()) {
+                    showStatus("No hay backups disponibles")
+                    Toast.makeText(context, "No se encontraron backups", Toast.LENGTH_SHORT).show()
+                } else {
+                    val backupList = backups.joinToString("\n")
+                    showStatus("Backups disponibles:\n$backupList")
+                    AccessibilityHelper.announceForAccessibility(tvStatus, "Se encontraron ${backups.size} backups")
+                    Toast.makeText(context, "Backups: ${backups.size}", Toast.LENGTH_SHORT).show()
+                }
             },
             onFailure = { exception ->
                 hideProgress()

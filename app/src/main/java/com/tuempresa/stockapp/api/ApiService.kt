@@ -8,6 +8,7 @@ import com.tuempresa.stockapp.models.Purchase
 import com.tuempresa.stockapp.models.Sale
 import com.tuempresa.stockapp.models.User
 import com.tuempresa.stockapp.models.Notification
+import com.tuempresa.stockapp.models.BackupData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -88,4 +89,8 @@ interface ApiService {
 
     @PUT("notifications/{id}")
     fun markNotificationAsRead(@Path("id") id: Int): Call<Notification>
+    
+    // Backup/Restore
+    @POST("backup/restore")
+    fun restoreBackup(@Body backupData: BackupData): Call<Map<String, Any>>
 }
