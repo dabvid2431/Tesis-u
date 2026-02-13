@@ -84,7 +84,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Role Spinner styled as dropdown -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +95,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutAdminCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Código de verificación admin (2do admin en adelante)"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAdminCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:padding="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

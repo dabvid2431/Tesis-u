@@ -240,7 +240,7 @@ class PurchaseFormFragment : Fragment() {
 
     private fun addPurchaseLine() {
         val defaultProduct = productList.firstOrNull()
-        val newLine = PurchaseLine(productId = defaultProduct?.id ?: 0, quantity = 1, price = defaultProduct?.price ?: 0.0)
+        val newLine = PurchaseLine(productId = defaultProduct?.id ?: 0, quantity = 1, price = defaultProduct?.purchasePrice ?: 0.0)
         purchaseLines.add(newLine)
         purchaseLineAdapter.notifyItemInserted(purchaseLines.size - 1)
         computeTotal()

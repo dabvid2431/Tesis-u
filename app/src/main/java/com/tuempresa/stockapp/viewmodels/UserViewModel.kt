@@ -19,7 +19,15 @@ class UserViewModel(private val repository: com.tuempresa.stockapp.repositories.
                 if (response.isSuccessful && userObj != null) {
                     _user.value = Resource.Success(userObj)
                 } else {
-                    _user.value = Resource.Error("Error al crear la cuenta")
+                    val backendMessage = try {
+                        response.errorBody()?.string()?.let { body ->
+                            val regex = "\"message\"\\s*:\\s*\"([^\"]+)\"".toRegex()
+                            regex.find(body)?.groupValues?.getOrNull(1)
+                        }
+                    } catch (_: Throwable) {
+                        null
+                    }
+                    _user.value = Resource.Error(backendMessage ?: "Error al crear la cuenta")
                 }
             }
             override fun onFailure(call: Call<User>, t: Throwable) {

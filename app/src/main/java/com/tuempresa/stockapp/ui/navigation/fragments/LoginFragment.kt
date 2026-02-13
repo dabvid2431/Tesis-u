@@ -67,6 +67,7 @@ class LoginFragment : Fragment() {
                         prefs.edit {
                             putString("user_role", user.role)
                             putString("username", user.username)
+                            putInt("user_id", user.id)
                         }
 
                         // Navegación al menú correspondiente (admin o vendedor)

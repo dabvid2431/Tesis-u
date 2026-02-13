@@ -1,6 +1,7 @@
 package com.tuempresa.stockapp.ui.navigation.fragments
 
 import android.os.Bundle
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -146,17 +147,23 @@ class SaleFormFragment : Fragment() {
                 )
             }
 
+            val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            val userId = prefs.getInt("user_id", 0)
+            val sellerUsername = prefs.getString("username", "") ?: ""
+
             val saleMap: Map<String, Any> = mapOf(
                 "clientId" to clientId,
+                "userId" to userId,
+                "sellerUsername" to sellerUsername,
                 "items" to itemsList
             )
 
-            saleViewModel.createSaleMap(saleMap) { saved ->
+            saleViewModel.createSaleMap(saleMap) { saved, errorMessage ->
                 if (saved != null) {
                     Toast.makeText(requireContext(), "Venta guardada", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 } else {
-                    Toast.makeText(requireContext(), "Error al guardar venta", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), errorMessage ?: "Error al guardar venta", Toast.LENGTH_LONG).show()
                 }
             }
         }

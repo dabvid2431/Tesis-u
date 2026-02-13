@@ -17,6 +17,7 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:padding="16dp">
 
         <LinearLayout
@@ -24,86 +25,100 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Proveedor -->
-            <TextView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Proveedor"
-                android:textColor="@color/text_secondary"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_marginBottom="12dp"
-                app:boxStrokeColor="@color/input_border_color"
-                app:boxStrokeWidth="2dp"
-                app:boxBackgroundColor="@color/input_background"
-                app:hintTextColor="@color/input_hint_color">
+                android:backgroundTint="@color/card_bg"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/input_border_color"
+                app:strokeWidth="1dp">
 
-                <Spinner
-                    android:id="@+id/spinnerPurchaseSupplier"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <!-- Producto -->
-            <!-- Eliminado el spinner de producto -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:text="Proveedor"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-            <!-- RecyclerView para líneas de compra -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPurchaseLines"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="120dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/background_card"
-                android:padding="8dp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginBottom="12dp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:boxStrokeColor="@color/input_border_color"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/input_hint_color">
 
-            <!-- Botón para agregar línea -->
-            <Button
-                android:id="@+id/btnAddPurchaseLine"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Agregar línea"
-                android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/purple_700"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                        <Spinner
+                            android:id="@+id/spinnerPurchaseSupplier"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Total general -->
-            <TextView
-                android:id="@+id/tvPurchaseTotal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Total: 0.00"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginBottom="12dp"
-                android:gravity="end" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="Líneas de compra"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-            <!-- Total restaurado -->
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total: 0.00"
-                android:textColor="@color/text_primary"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="end" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPurchaseLines"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/background_card"
+                        android:minHeight="120dp"
+                        android:padding="8dp" />
 
-            <!-- Botón para guardar compra -->
-            <Button
-                android:id="@+id/btnSavePurchase"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/btn_gradient"
-                android:text="GUARDAR COMPRA"
-                android:textAllCaps="true"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btnAddPurchaseLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="12dp"
+                        android:backgroundTint="@color/purple_700"
+                        android:text="Agregar línea"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="end"
+                        android:text="Total: 0.00"
+                        android:textColor="@color/text_primary"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnSavePurchase"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/btn_gradient"
+                        android:text="GUARDAR COMPRA"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 

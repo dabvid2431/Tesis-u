@@ -2,9 +2,12 @@ package com.tuempresa.stockapp.ui.navigation.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,6 +29,7 @@ class PurchaseListFragment : Fragment() {
     private val selectedIds = mutableSetOf<Int>()
     private var currentPurchases: List<com.tuempresa.stockapp.models.Purchase> = emptyList()
     private lateinit var textEmptyPurchases: View
+    private lateinit var searchInput: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,9 +51,11 @@ class PurchaseListFragment : Fragment() {
         fabAddPurchase = view.findViewById(R.id.fabAddPurchase)
         fabDeletePurchase = view.findViewById(R.id.fabDeletePurchase)
         textEmptyPurchases = view.findViewById(R.id.textEmptyPurchases)
+        searchInput = view.findViewById(R.id.etSearchPurchases)
         
         // Setup RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
         
         // Setup ViewModel
         viewModel = ViewModelProvider(this)[PurchaseViewModel::class.java]
@@ -82,13 +88,20 @@ class PurchaseListFragment : Fragment() {
                     selectedIds = selectedIds
                 )
                 recyclerView.adapter = adapter
-                textEmptyPurchases.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                applyFilter(searchInput.text?.toString().orEmpty())
             } else {
                 textEmptyPurchases.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
             }
         }
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyFilter(s?.toString().orEmpty())
+            }
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
         
         // Mostrar/ocultar FAB según rol (solo admin puede crear compras)
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -133,13 +146,20 @@ class PurchaseListFragment : Fragment() {
         if (selectedIds.contains(id)) selectedIds.remove(id) else selectedIds.add(id)
         // update FAB visibility
         fabDeletePurchase.visibility = if (selectedIds.isEmpty()) View.GONE else View.VISIBLE
-        // refresh adapter to show selection state for the affected item only
-        val pos = currentPurchases.indexOfFirst { it.id == id }
-        if (pos >= 0) recyclerView.adapter?.notifyItemChanged(pos)
+        // refresh adapter to show selection state (works with filtered view)
+        recyclerView.adapter?.notifyDataSetChanged()
         // if we just entered selection mode, show a hint
         if (wasEmpty && selectedIds.isNotEmpty()) {
             Snackbar.make(requireView(), "Seleccionado ${selectedIds.size}. Toca otros para seleccionar más o toca el botón eliminar.", Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    private fun applyFilter(query: String) {
+        if (!::adapter.isInitialized) return
+        adapter.submitSearchQuery(query)
+        val hasItems = adapter.itemCount > 0
+        recyclerView.visibility = if (hasItems) View.VISIBLE else View.GONE
+        textEmptyPurchases.visibility = if (hasItems) View.GONE else View.VISIBLE
     }
 
     private fun deletePurchases(ids: List<Int>) {

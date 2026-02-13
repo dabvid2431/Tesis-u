@@ -5,10 +5,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tuempresa.stockapp.R
@@ -22,7 +23,7 @@ class PurchaseLineAdapter(
 ) : RecyclerView.Adapter<PurchaseLineAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val spinnerProduct: Spinner = view.findViewById(R.id.spinnerLineProduct)
+        val autoProduct: AutoCompleteTextView = view.findViewById(R.id.autoLineProduct)
         val etQty: EditText = view.findViewById(R.id.etLineQty)
         val etPrice: EditText = view.findViewById(R.id.etLinePrice)
         val tvSubtotal: TextView = view.findViewById(R.id.tvLineSubtotal)
@@ -39,34 +40,34 @@ class PurchaseLineAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val line = lines[position]
 
-        // Setup product spinner
+        // Setup searchable products dropdown
         val productNames = products.map { it.name }
         val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, productNames)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        holder.spinnerProduct.adapter = adapter
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        holder.autoProduct.setAdapter(adapter)
+        holder.autoProduct.threshold = 1
 
-        // If productId is set, select it
-        val selectedIndex = products.indexOfFirst { it.id == line.productId }.takeIf { it >= 0 } ?: 0
-        holder.spinnerProduct.setSelection(selectedIndex)
+        // If productId is set, show selected product name
+        val selectedProduct = products.find { it.id == line.productId } ?: products.firstOrNull()
+        holder.autoProduct.setText(selectedProduct?.name.orEmpty(), false)
+        if (line.productId <= 0 && selectedProduct != null) {
+            line.productId = selectedProduct.id
+            line.productName = selectedProduct.name
+        }
 
-        holder.spinnerProduct.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, pos: Int, id: Long) {
+        holder.autoProduct.onItemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
+            if (pos in products.indices) {
                 val p = products[pos]
                 line.productId = p.id
                 line.productName = p.name
-                // default price to product purchase price if available
-                if (line.price <= 0.0) {
-                    line.price = p.price
-                    holder.etPrice.setText(String.format(java.util.Locale.getDefault(), "%.2f", line.price))
-                }
+                line.price = p.purchasePrice
+                holder.etPrice.setText(String.format(java.util.Locale.getDefault(), "%.2f", line.price))
                 holder.tvSubtotal.text = String.format(java.util.Locale.getDefault(), "%.2f", line.subtotal)
                 onChanged()
             }
+        }
 
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
-                // No-op: required by AdapterView.OnItemSelectedListener
-            }
-        })
+        holder.autoProduct.setOnClickListener { holder.autoProduct.showDropDown() }
 
         // quantity watcher
         holder.etQty.setText(line.quantity.toString())

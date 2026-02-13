@@ -17,6 +17,7 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:padding="16dp">
 
         <LinearLayout
@@ -27,9 +28,12 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"
-                android:backgroundTint="@color/card_bg">
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/card_bg"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/input_border_color"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -41,7 +45,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cliente"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="6dp" />
 
@@ -65,7 +70,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Líneas de venta"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="6dp" />
@@ -75,22 +81,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="120dp"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/background_card"
+                        android:padding="8dp" />
 
                     <Button
                         android:id="@+id/btnAddSaleLine"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="12dp"
+                        android:backgroundTint="@color/purple_700"
                         android:text="Agregar línea"
-                        android:layout_marginBottom="12dp" />
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvSaleTotal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="end"
                         android:text="Total: 0.00"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:layout_marginBottom="12dp" />
+                        android:textColor="@color/text_primary"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/btnSaveSale"
@@ -99,7 +114,7 @@
                         android:background="@drawable/btn_gradient"
                         android:text="GUARDAR VENTA"
                         android:textAllCaps="true"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@android:color/white"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

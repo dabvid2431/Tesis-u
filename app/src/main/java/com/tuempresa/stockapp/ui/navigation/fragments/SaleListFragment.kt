@@ -2,12 +2,15 @@ package com.tuempresa.stockapp.ui.navigation.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -24,6 +27,8 @@ class SaleListFragment : Fragment() {
     private lateinit var adapter: SaleAdapter
     private lateinit var fabAddSale: FloatingActionButton
     private lateinit var textEmptySales: View
+    private lateinit var searchInput: EditText
+    private var allSales: List<com.tuempresa.stockapp.models.Sale> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,25 +57,35 @@ class SaleListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewSales)
         fabAddSale = view.findViewById(R.id.fabAddSale)
         textEmptySales = view.findViewById(R.id.textEmptySales)
+        searchInput = view.findViewById(R.id.etSearchSales)
         
         // Setup RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
         
         // Setup ViewModel
         viewModel = ViewModelProvider(this)[SaleViewModel::class.java]
         
         // Observe sales data
         viewModel.sales.observe(viewLifecycleOwner) { sales ->
+            allSales = sales
             if (sales.isNotEmpty()) {
                 adapter = SaleAdapter(sales)
                 recyclerView.adapter = adapter
-                textEmptySales.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                applyFilter(searchInput.text?.toString().orEmpty())
             } else {
                 textEmptySales.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
             }
         }
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyFilter(s?.toString().orEmpty())
+            }
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
         
         // Mostrar/ocultar FAB según rol (admin y vendedores pueden crear ventas)
         if (role == "admin" || role == "vendedor") {
@@ -85,6 +100,14 @@ class SaleListFragment : Fragment() {
         
         // Load sales
         viewModel.fetchSales()
+    }
+
+    private fun applyFilter(query: String) {
+        if (!::adapter.isInitialized) return
+        adapter.submitSearchQuery(query)
+        val hasItems = adapter.itemCount > 0
+        recyclerView.visibility = if (hasItems) View.VISIBLE else View.GONE
+        textEmptySales.visibility = if (hasItems) View.GONE else View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

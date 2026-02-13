@@ -7,14 +7,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tuempresa.stockapp.models.Purchase
 import com.tuempresa.stockapp.R
+import java.text.Normalizer
+import java.util.Locale
 
 class PurchaseAdapter(
-    private val purchases: List<Purchase>,
+    purchases: List<Purchase>,
     private val onItemClick: (Purchase) -> Unit,
     private val onItemLongClick: (Purchase) -> Unit,
     private val onEditClick: (Purchase) -> Unit,
     private val selectedIds: Set<Int>
 ) : RecyclerView.Adapter<PurchaseAdapter.ViewHolder>() {
+    private val allPurchases = purchases.toMutableList()
+    private val visiblePurchases = purchases.toMutableList()
     
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val id: TextView = view.findViewById(R.id.purchaseId)
@@ -29,7 +33,7 @@ class PurchaseAdapter(
     }
     
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val purchase = purchases[position]
+        val purchase = visiblePurchases[position]
         holder.id.text = "Compra #${purchase.id}"
         holder.date.text = purchase.date ?: "No date"
         holder.total.text = "$${String.format(java.util.Locale.getDefault(), "%.2f", purchase.total)}"
@@ -45,5 +49,33 @@ class PurchaseAdapter(
         holder.itemView.alpha = if (selectedIds.contains(purchase.id)) 0.5f else 1f
     }
     
-    override fun getItemCount(): Int = purchases.size
+    override fun getItemCount(): Int = visiblePurchases.size
+
+    fun submitSearchQuery(query: String) {
+        val normalizedQuery = query.normalizeForSearch()
+        visiblePurchases.clear()
+        if (normalizedQuery.isBlank()) {
+            visiblePurchases.addAll(allPurchases)
+        } else {
+            visiblePurchases.addAll(
+                allPurchases.filter { purchase ->
+                    val idText = "compra ${purchase.id}".normalizeForSearch()
+                    val dateText = (purchase.date ?: "").normalizeForSearch()
+                    val totalText = String.format(Locale.getDefault(), "%.2f", purchase.total).normalizeForSearch()
+                    idText.contains(normalizedQuery) ||
+                        dateText.contains(normalizedQuery) ||
+                        totalText.contains(normalizedQuery)
+                }
+            )
+        }
+        notifyDataSetChanged()
+    }
+
+    private fun String.normalizeForSearch(): String {
+        return Normalizer
+            .normalize(this, Normalizer.Form.NFD)
+            .replace("\\p{InCombiningDiacriticalMarks}+".toRegex(), "")
+            .lowercase(Locale.getDefault())
+            .trim()
+    }
 }

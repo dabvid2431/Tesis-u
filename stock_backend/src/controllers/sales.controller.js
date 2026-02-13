@@ -1,20 +1,42 @@
 import { Sale, SaleItem, Product, StockMovement } from "../models/index.js";
+import User from "../models/user.model.js";
 import { createNotification, checkLowStock } from "./notifications.controller.js";
 
 export const getSales = async (req, res) => {
-  const sales = await Sale.findAll({ include: SaleItem });
-  res.json(sales);
+  const sales = await Sale.findAll({
+    include: [
+      SaleItem,
+      { model: User, as: "seller", attributes: ["id", "username"] }
+    ]
+  });
+  const enrichedSales = sales.map((sale) => {
+    const plain = sale.toJSON();
+    return {
+      ...plain,
+      sellerName: plain.seller?.username || null
+    };
+  });
+  res.json(enrichedSales);
 };
 
 export const createSale = async (req, res) => {
-  const { clientId, items } = req.body; // items = [{ productId, quantity, price }]
+  const { clientId, userId, sellerUsername, items } = req.body; // items = [{ productId, quantity, price }]
   try {
-    const sale = await Sale.create({ clientId, total: 0 });
+    let validUserId = Number.isInteger(Number(userId)) && Number(userId) > 0 ? Number(userId) : null;
+    if (!validUserId && sellerUsername) {
+      const seller = await User.findOne({ where: { username: sellerUsername } });
+      if (seller) validUserId = seller.id;
+    }
+    const sale = await Sale.create({ clientId, userId: validUserId, total: 0 });
     let total = 0;
 
     for (const i of items) {
       const product = await Product.findByPk(i.productId);
-      if (product.stock < i.quantity) return res.status(400).json({ error: `Stock insuficiente para ${product.name}` });
+      if (product.stock < i.quantity) {
+        return res.status(400).json({
+          error: `Stock insuficiente para ${product.name}. Disponible: ${product.stock}, solicitado: ${i.quantity}`
+        });
+      }
 
       await SaleItem.create({ saleId: sale.id, ...i });
       product.stock -= i.quantity;

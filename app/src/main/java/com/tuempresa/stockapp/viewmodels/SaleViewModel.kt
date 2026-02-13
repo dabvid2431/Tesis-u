@@ -36,13 +36,25 @@ class SaleViewModel(private val repository: ISaleRepository = SaleRepository()) 
     }
 
     // Create sale using a flexible map payload (clientId + items list) to match backend
-    fun createSaleMap(saleMap: Map<String, Any>, onResult: (Sale?) -> Unit) {
+    fun createSaleMap(saleMap: Map<String, Any>, onResult: (Sale?, String?) -> Unit) {
         repository.createSaleMap(saleMap).enqueue(object : Callback<Sale> {
             override fun onResponse(call: Call<Sale>, response: Response<Sale>) {
-                onResult(response.body())
+                if (response.isSuccessful && response.body() != null) {
+                    onResult(response.body(), null)
+                } else {
+                    val backendMessage = try {
+                        response.errorBody()?.string()?.let { body ->
+                            val regex = "\"error\"\\s*:\\s*\"([^\"]+)\"".toRegex()
+                            regex.find(body)?.groupValues?.getOrNull(1)
+                        }
+                    } catch (_: Throwable) {
+                        null
+                    }
+                    onResult(null, backendMessage ?: "Error al guardar venta")
+                }
             }
             override fun onFailure(call: Call<Sale>, t: Throwable) {
-                onResult(null)
+                onResult(null, "Error de red: ${t.message}")
             }
         })
     }

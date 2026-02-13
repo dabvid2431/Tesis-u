@@ -2,12 +2,15 @@ package com.tuempresa.stockapp.ui.navigation.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -27,6 +30,8 @@ class ProductListFragment : Fragment() {
     private lateinit var adapter: ProductAdapter
     private lateinit var progressBar: ProgressBar
     private lateinit var errorText: TextView
+    private lateinit var searchInput: EditText
+    private var allProducts: List<com.tuempresa.stockapp.models.Product> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -35,8 +40,10 @@ class ProductListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_product_list, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
         progressBar = view.findViewById(R.id.progressBarProducts)
         errorText = view.findViewById(R.id.textErrorProducts)
+        searchInput = view.findViewById(R.id.etSearchProducts)
         return view
     }
 
@@ -53,6 +60,7 @@ class ProductListFragment : Fragment() {
                 is Resource.Success -> {
                     progressBar.visibility = View.GONE
                     val products = resource.data ?: emptyList()
+                    allProducts = products
                     if (products.isEmpty()) {
                         recyclerView.visibility = View.GONE
                         errorText.visibility = View.VISIBLE
@@ -62,6 +70,7 @@ class ProductListFragment : Fragment() {
                         errorText.visibility = View.GONE
                         adapter = ProductAdapter(products)
                         recyclerView.adapter = adapter
+                        applyFilter(searchInput.text?.toString().orEmpty())
                     }
                 }
                 is Resource.Error -> {
@@ -73,6 +82,14 @@ class ProductListFragment : Fragment() {
             }
         }
         viewModel.fetchProducts()
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyFilter(s?.toString().orEmpty())
+            }
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
         
         // Verificar stock bajo automáticamente
         val apiService = com.tuempresa.stockapp.api.RetrofitClient.instance
@@ -101,6 +118,15 @@ class ProductListFragment : Fragment() {
                 findNavController().navigate(R.id.productFormFragment)
             }
         }
+    }
+
+    private fun applyFilter(query: String) {
+        if (!::adapter.isInitialized) return
+        adapter.submitSearchQuery(query)
+        val hasItems = adapter.itemCount > 0
+        recyclerView.visibility = if (hasItems) View.VISIBLE else View.GONE
+        errorText.visibility = if (hasItems) View.GONE else View.VISIBLE
+        errorText.text = if (allProducts.isEmpty()) "No hay productos" else "No se encontraron resultados"
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
