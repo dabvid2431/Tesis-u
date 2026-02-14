@@ -31,7 +31,11 @@ export async function seed() {
     { sku: "LIM-001", name: "Detergente 1L", brand: "Limpio", purchasePrice: 2.50, salePrice: 5.00, stock: 20, categoryName: "Limpieza" },
     { sku: "PAP-002", name: "Lapicero Azul", brand: "Escribe", purchasePrice: 0.20, salePrice: 0.50, stock: 100, categoryName: "Papelería" },
     { sku: "TEC-002", name: "Cable USB-C", brand: "CableMax", purchasePrice: 3.00, salePrice: 6.00, stock: 15, categoryName: "Tecnología" },
-    { sku: "LIM-002", name: "Esponja", brand: "Foam", purchasePrice: 0.50, salePrice: 1.20, stock: 30, categoryName: "Limpieza" }
+    { sku: "LIM-002", name: "Esponja", brand: "Foam", purchasePrice: 0.50, salePrice: 1.20, stock: 30, categoryName: "Limpieza" },
+    { sku: "PAP-003", name: "Resaltador Amarillo", brand: "Escribe", purchasePrice: 0.80, salePrice: 1.50, stock: 50, categoryName: "Papelería" },
+    { sku: "TEC-003", name: "Teclado Inalámbrico", brand: "MarcaTec", purchasePrice: 25.00, salePrice: 45.00, stock: 8, categoryName: "Tecnología" },
+    { sku: "LIM-003", name: "Papel Higiénico 12 Rollos", brand: "Suave", purchasePrice: 4.00, salePrice: 7.50, stock: 25, categoryName: "Limpieza" },
+    { sku: "PAP-004", name: "Folder de Manila", brand: "OficiMax", purchasePrice: 0.15, salePrice: 0.40, stock: 80, categoryName: "Papelería" }
   ];
 
   for (const p of products) {

@@ -9,8 +9,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_700"
-        android:titleTextColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:titleTextColor="@color/colorOnPrimary"
         android:title="Nuevo proveedor" />
 
     <ScrollView
@@ -92,15 +92,13 @@
                             android:textColorHint="@color/input_hint_color" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSaveSupplier"
+                        style="@style/PapelTrack_Button"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/btn_gradient"
+                        android:layout_height="wrap_content"
                         android:text="GUARDAR"
-                        android:textAllCaps="true"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold" />
+                        android:textAllCaps="true" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

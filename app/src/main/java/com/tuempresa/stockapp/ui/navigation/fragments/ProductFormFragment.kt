@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Button
-import android.widget.Toast
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tuempresa.stockapp.R
+import com.tuempresa.stockapp.utils.showErrorFeedback
+import com.tuempresa.stockapp.utils.showSuccessFeedback
 import com.tuempresa.stockapp.viewmodels.CategoryViewModel
 import com.tuempresa.stockapp.viewmodels.ProductViewModel
 import com.tuempresa.stockapp.viewmodels.SupplierViewModel
@@ -121,7 +122,7 @@ class ProductFormFragment : Fragment() {
         
         // Validaciones
         if (name.isEmpty() || description.isEmpty() || priceText.isEmpty() || stockText.isEmpty()) {
-            Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show()
+            requireView().showErrorFeedback("Completa todos los campos")
             return
         }
         
@@ -129,12 +130,12 @@ class ProductFormFragment : Fragment() {
         val stock = stockText.toIntOrNull()
         
         if (price == null || price <= 0) {
-            Toast.makeText(requireContext(), "Precio inválido", Toast.LENGTH_SHORT).show()
+            requireView().showErrorFeedback("Precio inválido")
             return
         }
         
         if (stock == null || stock < 0) {
-            Toast.makeText(requireContext(), "Stock inválido", Toast.LENGTH_SHORT).show()
+            requireView().showErrorFeedback("Stock inválido")
             return
         }
         
@@ -143,7 +144,7 @@ class ProductFormFragment : Fragment() {
         val supplierId = getSelectedSupplierId()
         
         if (categoryId == -1 || supplierId == -1) {
-            Toast.makeText(requireContext(), "Selecciona una categoría y un proveedor", Toast.LENGTH_SHORT).show()
+            requireView().showErrorFeedback("Selecciona una categoría y un proveedor")
             return
         }
         
@@ -159,10 +160,10 @@ class ProductFormFragment : Fragment() {
         )
         productViewModel.createProductMap(productMap) { savedProduct ->
             if (savedProduct != null) {
-                Toast.makeText(requireContext(), "Producto guardado exitosamente", Toast.LENGTH_SHORT).show()
+                requireView().showSuccessFeedback("Producto guardado exitosamente")
                 findNavController().navigateUp()
             } else {
-                Toast.makeText(requireContext(), "Error al guardar el producto", Toast.LENGTH_SHORT).show()
+                requireView().showErrorFeedback("Error al guardar el producto")
             }
         }
     }

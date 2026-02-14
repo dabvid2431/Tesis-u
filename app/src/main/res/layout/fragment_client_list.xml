@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:title="CLIENTES"
-            android:titleTextColor="@android:color/white"
+            android:titleTextColor="@color/colorOnPrimary"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
@@ -30,7 +30,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@color/background_surface"
             android:padding="16dp">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="No hay clientes registrados"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@color/text_secondary"
                 android:textSize="16sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +70,6 @@
         android:contentDescription="Agregar cliente"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/colorPrimary"
-        app:tint="@android:color/white" />
+        app:tint="@color/colorOnPrimary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

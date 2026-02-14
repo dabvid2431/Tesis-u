@@ -28,16 +28,16 @@
             android:layout_height="wrap_content"
             android:text="2024-01-30"
             android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/text_secondary"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonMarkAsRead"
+            style="@style/PapelTrack_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Marcar como leído"
-            android:textSize="12sp"
-            style="@style/Widget.MaterialComponents.Button" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

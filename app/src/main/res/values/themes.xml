@@ -4,19 +4,95 @@
     <style name="Theme.PapelTrack" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
-        
-        <!-- Estilos para TextInputLayout -->
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="android:windowBackground">@color/background_surface</item>
+        <item name="android:statusBarColor">@color/toolbar_background</item>
+        <item name="android:navigationBarColor">@color/background_surface</item>
+
         <item name="textInputStyle">@style/PapelTrack_TextInputLayout</item>
+        <item name="materialButtonStyle">@style/PapelTrack_Button</item>
+        <item name="buttonStyle">@style/PapelTrack_Button</item>
+        <item name="toolbarStyle">@style/PapelTrack_Toolbar</item>
+        <item name="materialCardViewStyle">@style/PapelTrack_Card</item>
+        <item name="snackbarStyle">@style/PapelTrack_Snackbar</item>
+        <item name="textAppearanceHeadline6">@style/PapelTrack_TextAppearance.Headline6</item>
+        <item name="textAppearanceBody1">@style/PapelTrack_TextAppearance.Body1</item>
+
         <item name="colorControlActivated">@color/input_focused_border_color</item>
         <item name="colorControlNormal">@color/input_border_color</item>
     </style>
-    
-    <!-- Estilo personalizado para TextInputLayout -->
+
+    <style name="PapelTrack_TextAppearance.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PapelTrack_TextAppearance.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
     <style name="PapelTrack_TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/input_border_color</item>
         <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="shapeAppearanceOverlay">@style/PapelTrack_ShapeAppearance.Small</item>
         <item name="boxBackgroundColor">@color/input_background</item>
         <item name="hintTextColor">@color/input_hint_color</item>
+    </style>
+
+    <style name="PapelTrack_Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="rippleColor">@color/colorSecondary</item>
+    </style>
+
+    <style name="PapelTrack_Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="strokeColor">@color/colorPrimary</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="PapelTrack_Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/toolbar_background</item>
+        <item name="titleTextColor">@color/toolbar_content</item>
+        <item name="subtitleTextColor">@color/text_secondary</item>
+        <item name="navigationIconTint">@color/toolbar_content</item>
+    </style>
+
+    <style name="PapelTrack_Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/card_bg</item>
+        <item name="shapeAppearanceOverlay">@style/PapelTrack_ShapeAppearance.Medium</item>
+    </style>
+
+    <style name="PapelTrack_Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/colorOnSurface</item>
+        <item name="actionTextColorAlpha">1</item>
+    </style>
+
+    <style name="PapelTrack_ShapeAppearance" />
+
+    <style name="PapelTrack_ShapeAppearance.Small">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
+    <style name="PapelTrack_ShapeAppearance.Medium">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 </resources>

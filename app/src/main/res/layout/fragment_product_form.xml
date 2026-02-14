@@ -11,9 +11,9 @@
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_700"
-        android:titleTextColor="@android:color/white"
-        app:navigationIconTint="@android:color/white"
+        android:background="@color/toolbar_background"
+        android:titleTextColor="@color/toolbar_content"
+        app:navigationIconTint="@color/toolbar_content"
         android:title="Nuevo producto" />
 
     <!-- Content -->
@@ -42,7 +42,7 @@
                     android:layout_height="56dp"
                     android:src="@mipmap/ic_launcher_round"
                     android:contentDescription="icon"
-                    app:tint="@android:color/white"
+                    app:tint="@color/colorOnPrimary"
                     android:background="@drawable/btn_gradient"
                     android:padding="12dp" />
 
@@ -238,15 +238,13 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Botón guardar (mantener id existente buttonSaveProduct) -->
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonSaveProduct"
+                        style="@style/PapelTrack_Button"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/btn_gradient"
+                        android:layout_height="wrap_content"
                         android:text="GUARDAR"
-                        android:textAllCaps="true"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold" />
+                        android:textAllCaps="true" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/purple_700"
+    android:background="@color/background_surface"
     tools:context=".ui.navigation.fragments.AdminMenuFragment">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Panel de Vendedor"
-        android:textColor="@android:color/white"
+        android:textColor="@color/text_primary"
         android:textSize="20sp"
         android:paddingBottom="12dp" />
 

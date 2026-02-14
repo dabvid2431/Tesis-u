@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:title="COMPRAS"
-            android:titleTextColor="@android:color/white"
+            android:titleTextColor="@color/colorOnPrimary"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:background="@android:color/white"
+        android:background="@color/background_surface"
         android:paddingStart="16dp"
         android:paddingTop="12dp"
         android:paddingEnd="16dp"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No hay compras registradas"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/text_secondary"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +89,7 @@
         android:contentDescription="Agregar compra"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/colorPrimary"
-        app:tint="@android:color/white" />
+        app:tint="@color/colorOnPrimary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabDeletePurchase"
@@ -101,7 +101,7 @@
         android:contentDescription="Eliminar compras"
         android:src="@drawable/ic_delete"
         android:visibility="gone"
-        app:backgroundTint="@android:color/holo_red_dark"
-        app:tint="@android:color/white" />
+        app:backgroundTint="@color/colorError"
+        app:tint="@color/colorOnError" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

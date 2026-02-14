@@ -9,8 +9,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_700"
-        android:titleTextColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:titleTextColor="@color/colorOnPrimary"
         android:title="Nueva venta" />
 
     <ScrollView
@@ -85,16 +85,14 @@
                         android:background="@color/background_card"
                         android:padding="8dp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAddSaleLine"
+                        style="@style/PapelTrack_Button"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:backgroundTint="@color/purple_700"
                         android:text="Agregar línea"
-                        android:textAllCaps="true"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+                        android:textAllCaps="true" />
 
                     <TextView
                         android:id="@+id/tvSaleTotal"
@@ -107,15 +105,13 @@
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSaveSale"
+                        style="@style/PapelTrack_Button"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/btn_gradient"
+                        android:layout_height="wrap_content"
                         android:text="GUARDAR VENTA"
-                        android:textAllCaps="true"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+                        android:textAllCaps="true" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
