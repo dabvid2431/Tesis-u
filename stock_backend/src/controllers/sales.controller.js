@@ -1,4 +1,4 @@
-import { Sale, SaleItem, Product, StockMovement } from "../models/index.js";
+import { Sale, SaleItem, Product, StockMovement, Client } from "../models/index.js";
 import User from "../models/user.model.js";
 import { createNotification, checkLowStock } from "./notifications.controller.js";
 
@@ -6,6 +6,7 @@ export const getSales = async (req, res) => {
   const sales = await Sale.findAll({
     include: [
       SaleItem,
+      { model: Client, attributes: ["id", "name"] },
       { model: User, as: "seller", attributes: ["id", "username"] }
     ]
   });
@@ -13,6 +14,7 @@ export const getSales = async (req, res) => {
     const plain = sale.toJSON();
     return {
       ...plain,
+      clientName: plain.client?.name || null,
       sellerName: plain.seller?.username || null
     };
   });

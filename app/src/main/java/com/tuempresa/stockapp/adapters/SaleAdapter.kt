@@ -30,7 +30,9 @@ class SaleAdapter(sales: List<Sale>) : RecyclerView.Adapter<SaleAdapter.ViewHold
         val sale = visibleSales[position]
         holder.id.text = "Venta #${sale.id}"
         holder.date.text = sale.date ?: "No date"
-        holder.seller.text = "Vendedor: ${sale.sellerName ?: "No registrado"}"
+        val clientText = sale.clientName ?: "No registrado"
+        val sellerText = sale.sellerName ?: "No registrado"
+        holder.seller.text = "Cliente: $clientText · Vendedor: $sellerText"
         holder.total.text = "$${String.format(java.util.Locale.getDefault(), "%.2f", sale.total)}"
     }
     
@@ -46,10 +48,12 @@ class SaleAdapter(sales: List<Sale>) : RecyclerView.Adapter<SaleAdapter.ViewHold
                 allSales.filter { sale ->
                     val idText = "venta ${sale.id}".normalizeForSearch()
                     val dateText = (sale.date ?: "").normalizeForSearch()
+                    val clientText = (sale.clientName ?: "").normalizeForSearch()
                     val sellerText = (sale.sellerName ?: "").normalizeForSearch()
                     val totalText = String.format(Locale.getDefault(), "%.2f", sale.total).normalizeForSearch()
                     idText.contains(normalizedQuery) ||
                         dateText.contains(normalizedQuery) ||
+                        clientText.contains(normalizedQuery) ||
                         sellerText.contains(normalizedQuery) ||
                         totalText.contains(normalizedQuery)
                 }
