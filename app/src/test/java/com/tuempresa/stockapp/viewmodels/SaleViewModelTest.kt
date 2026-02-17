@@ -96,7 +96,7 @@ class SaleViewModelTest {
 
         val vm = SaleViewModel(repo)
         var result: Sale? = null
-        vm.createSaleMap(mapOf("clientId" to 12)) { res -> result = res }
+        vm.createSaleMap(mapOf("clientId" to 12)) { res, _ -> result = res }
         assertEquals(newSale, result)
     }
 
@@ -112,7 +112,7 @@ class SaleViewModelTest {
 
         val vm = SaleViewModel(repo)
         var result: Sale? = Sale(id = -1, clientId = -1, date = "", total = 0.0)
-        vm.createSaleMap(mapOf("clientId" to 0)) { res -> result = res }
+        vm.createSaleMap(mapOf("clientId" to 0)) { res, _ -> result = res }
         assertNull(result)
     }
 

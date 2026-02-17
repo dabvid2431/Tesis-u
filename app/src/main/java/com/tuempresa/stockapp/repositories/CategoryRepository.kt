@@ -5,7 +5,7 @@ import com.tuempresa.stockapp.models.Category
 import retrofit2.Call
 
 class CategoryRepository : ICategoryRepository {
-    private val api = RetrofitClient.instance
+    private val api get() = RetrofitClient.instance
 
     override fun getCategories(): Call<List<Category>> = api.getCategories()
     override fun createCategory(category: Category): Call<Category> = api.createCategory(category)

@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tuempresa.stockapp.R
+import com.tuempresa.stockapp.offline.NetworkUtils
+import com.tuempresa.stockapp.offline.SyncQueueRepository
 import com.tuempresa.stockapp.utils.showErrorFeedback
 import com.tuempresa.stockapp.utils.showSuccessFeedback
 import com.tuempresa.stockapp.viewmodels.CategoryViewModel
@@ -158,12 +160,30 @@ class ProductFormFragment : Fragment() {
             "stock" to stock,
             "categoryId" to categoryId
         )
+
+        val queueRepository = SyncQueueRepository(requireContext())
+
+        if (!NetworkUtils.isOnline(requireContext())) {
+            queueRepository.enqueueCreateProduct(productMap)
+            val pendingCount = queueRepository.getPendingCount()
+            requireView().showSuccessFeedback("Sin internet. Producto en cola (${pendingCount} pendiente(s)).")
+            findNavController().navigateUp()
+            return
+        }
+
         productViewModel.createProductMap(productMap) { savedProduct ->
             if (savedProduct != null) {
                 requireView().showSuccessFeedback("Producto guardado exitosamente")
                 findNavController().navigateUp()
             } else {
-                requireView().showErrorFeedback("Error al guardar el producto")
+                if (!NetworkUtils.isOnline(requireContext())) {
+                    queueRepository.enqueueCreateProduct(productMap)
+                    val pendingCount = queueRepository.getPendingCount()
+                    requireView().showSuccessFeedback("Sincronización diferida: producto en cola (${pendingCount} pendiente(s)).")
+                    findNavController().navigateUp()
+                } else {
+                    requireView().showErrorFeedback("Error al guardar el producto")
+                }
             }
         }
     }

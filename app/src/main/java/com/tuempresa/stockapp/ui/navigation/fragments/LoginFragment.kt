@@ -2,6 +2,7 @@ package com.tuempresa.stockapp.ui.navigation.fragments
 
 import android.content.Context
 import android.os.Bundle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.NavOptions
 import com.tuempresa.stockapp.R
+import com.tuempresa.stockapp.api.RetrofitClient
 import com.tuempresa.stockapp.viewmodels.UserViewModel
 import com.tuempresa.stockapp.utils.Resource
 
@@ -29,13 +31,26 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        RetrofitClient.initialize(requireContext().applicationContext)
         viewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         val editUsername = view.findViewById<EditText>(R.id.editTextUsername)
         val editPassword = view.findViewById<EditText>(R.id.editTextPassword)
-    val buttonLogin = view.findViewById<Button>(R.id.buttonLogin)
-    val buttonGoToCreateAccount = view.findViewById<Button>(R.id.buttonGoToCreateAccount)
+        val buttonLogin = view.findViewById<Button>(R.id.buttonLogin)
+        val buttonGoToCreateAccount = view.findViewById<Button>(R.id.buttonGoToCreateAccount)
+        val buttonConfigureServer = view.findViewById<Button>(R.id.buttonConfigureServer)
+        val textCurrentServer = view.findViewById<TextView>(R.id.textCurrentServer)
         val textError = view.findViewById<TextView>(R.id.textLoginError)
+
+        val refreshServerLabel: () -> Unit = {
+            val baseUrl = RetrofitClient.getCurrentBaseUrl(requireContext())
+            textCurrentServer.text = "Servidor: $baseUrl"
+        }
+        refreshServerLabel()
+
+        buttonConfigureServer.setOnClickListener {
+            showServerConfigDialog(refreshServerLabel)
+        }
 
         buttonLogin.setOnClickListener {
             val username = editUsername.text.toString().trim()
@@ -85,5 +100,31 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showServerConfigDialog(onSaved: () -> Unit) {
+        val input = EditText(requireContext()).apply {
+            setText(RetrofitClient.getCurrentBaseUrl(requireContext()))
+            hint = "https://tu-servidor.com/api/"
+            setPadding(40, 24, 40, 24)
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Configurar servidor")
+            .setMessage("Usa una URL pública para funcionar en cualquier red")
+            .setView(input)
+            .setNegativeButton("Cancelar", null)
+            .setPositiveButton("Guardar") { _, _ ->
+                val typed = input.text?.toString()?.trim().orEmpty()
+                if (typed.isBlank()) {
+                    Toast.makeText(requireContext(), "Ingresa una URL válida", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                RetrofitClient.updateBaseUrl(requireContext(), typed)
+                onSaved()
+                Toast.makeText(requireContext(), "Servidor actualizado", Toast.LENGTH_SHORT).show()
+            }
+            .show()
     }
 }

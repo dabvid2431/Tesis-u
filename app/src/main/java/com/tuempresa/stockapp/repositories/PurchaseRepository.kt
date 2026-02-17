@@ -5,7 +5,7 @@ import com.tuempresa.stockapp.models.Purchase
 import retrofit2.Call
 
 class PurchaseRepository : IPurchaseRepository {
-    private val api = RetrofitClient.instance
+    private val api get() = RetrofitClient.instance
 
     override fun getPurchases(): Call<List<Purchase>> = api.getPurchases()
     override fun createPurchase(purchase: Purchase): Call<Purchase> = api.createPurchase(purchase)

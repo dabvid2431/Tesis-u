@@ -5,7 +5,7 @@ import com.tuempresa.stockapp.models.Supplier
 import retrofit2.Call
 
 class SupplierRepository : ISupplierRepository {
-    private val api = RetrofitClient.instance
+    private val api get() = RetrofitClient.instance
 
     override fun getSuppliers(): Call<List<Supplier>> = api.getSuppliers()
     override fun createSupplier(supplier: Supplier): Call<Supplier> = api.createSupplier(supplier)

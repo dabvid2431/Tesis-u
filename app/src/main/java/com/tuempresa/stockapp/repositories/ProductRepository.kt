@@ -5,7 +5,7 @@ import com.tuempresa.stockapp.models.Product
 import retrofit2.Call
 
 class ProductRepository : IProductRepository {
-    private val api = RetrofitClient.instance
+    private val api get() = RetrofitClient.instance
 
     override fun getProducts(): Call<List<Product>> = api.getProducts()
     override fun createProduct(product: Product): Call<Product> = api.createProduct(product)

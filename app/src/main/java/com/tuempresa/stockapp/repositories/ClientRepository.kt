@@ -5,7 +5,7 @@ import com.tuempresa.stockapp.models.Client
 import retrofit2.Call
 
 class ClientRepository : IClientRepository {
-    private val api = RetrofitClient.instance
+    private val api get() = RetrofitClient.instance
 
     override fun getClients(): Call<List<Client>> = api.getClients()
     override fun createClient(client: Client): Call<Client> = api.createClient(client)

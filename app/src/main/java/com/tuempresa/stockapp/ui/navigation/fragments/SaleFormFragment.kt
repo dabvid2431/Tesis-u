@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tuempresa.stockapp.R
+import com.tuempresa.stockapp.offline.NetworkUtils
+import com.tuempresa.stockapp.offline.SyncQueueRepository
 import com.tuempresa.stockapp.viewmodels.SaleViewModel
 import com.tuempresa.stockapp.viewmodels.ClientViewModel
 import com.tuempresa.stockapp.viewmodels.ProductViewModel
@@ -158,12 +160,37 @@ class SaleFormFragment : Fragment() {
                 "items" to itemsList
             )
 
+            val queueRepository = SyncQueueRepository(requireContext())
+
+            if (!NetworkUtils.isOnline(requireContext())) {
+                queueRepository.enqueueCreateSale(saleMap)
+                val pendingCount = queueRepository.getPendingCount()
+                Toast.makeText(
+                    requireContext(),
+                    "Sin internet. Venta guardada en cola (${pendingCount} pendiente(s)).",
+                    Toast.LENGTH_LONG
+                ).show()
+                findNavController().navigateUp()
+                return
+            }
+
             saleViewModel.createSaleMap(saleMap) { saved, errorMessage ->
                 if (saved != null) {
                     Toast.makeText(requireContext(), "Venta guardada", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 } else {
-                    Toast.makeText(requireContext(), errorMessage ?: "Error al guardar venta", Toast.LENGTH_LONG).show()
+                    if ((errorMessage ?: "").contains("Error de red", ignoreCase = true)) {
+                        queueRepository.enqueueCreateSale(saleMap)
+                        val pendingCount = queueRepository.getPendingCount()
+                        Toast.makeText(
+                            requireContext(),
+                            "Sincronización diferida: venta en cola (${pendingCount} pendiente(s)).",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        findNavController().navigateUp()
+                    } else {
+                        Toast.makeText(requireContext(), errorMessage ?: "Error al guardar venta", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

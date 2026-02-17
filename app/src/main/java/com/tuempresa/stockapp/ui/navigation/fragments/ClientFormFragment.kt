@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.tuempresa.stockapp.R
+import com.tuempresa.stockapp.offline.NetworkUtils
+import com.tuempresa.stockapp.offline.SyncQueueRepository
 import com.tuempresa.stockapp.models.Client
 import com.tuempresa.stockapp.viewmodels.ClientViewModel
 
@@ -64,6 +66,20 @@ class ClientFormFragment : Fragment() {
                 if (email.isNotBlank()) clientMap["email"] = email
                 if (address.isNotBlank()) clientMap["address"] = address
 
+                val queueRepository = SyncQueueRepository(requireContext())
+
+                if (!NetworkUtils.isOnline(requireContext())) {
+                    queueRepository.enqueueCreateClient(clientMap)
+                    val pendingCount = queueRepository.getPendingCount()
+                    Toast.makeText(
+                        requireContext(),
+                        "Sin internet. Cliente guardado en cola (${pendingCount} pendiente(s)).",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    findNavController().popBackStack()
+                    return@setOnClickListener
+                }
+
                 viewModel.createClientMap(clientMap, { created ->
                     if (created != null) {
                         Toast.makeText(requireContext(), "Cliente creado", Toast.LENGTH_SHORT).show()
@@ -72,7 +88,18 @@ class ClientFormFragment : Fragment() {
                         // onError already handled
                     }
                 }, { errorMsg ->
-                    Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_LONG).show()
+                    if ((errorMsg).contains("network", ignoreCase = true) || !NetworkUtils.isOnline(requireContext())) {
+                        queueRepository.enqueueCreateClient(clientMap)
+                        val pendingCount = queueRepository.getPendingCount()
+                        Toast.makeText(
+                            requireContext(),
+                            "Sincronización diferida: cliente en cola (${pendingCount} pendiente(s)).",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        findNavController().popBackStack()
+                    } else {
+                        Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_LONG).show()
+                    }
                 })
         }
     }

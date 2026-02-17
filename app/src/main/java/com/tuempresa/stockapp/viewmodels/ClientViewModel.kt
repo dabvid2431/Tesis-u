@@ -3,6 +3,7 @@ package com.tuempresa.stockapp.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import android.util.Log
 import com.tuempresa.stockapp.models.Client
 import com.tuempresa.stockapp.repositories.ClientRepository
 import com.tuempresa.stockapp.repositories.IClientRepository
@@ -25,6 +26,10 @@ class ClientViewModel(private val repository: IClientRepository = ClientReposito
         })
     }
 
+    private fun safeLogError(tag: String, message: String) {
+        runCatching { Log.e(tag, message) }
+    }
+
         fun createClient(client: Client, onResult: (Client?) -> Unit, onError: (String) -> Unit) {
             repository.createClient(client).enqueue(object : Callback<Client> {
                 override fun onResponse(call: Call<Client>, response: Response<Client>) {
@@ -37,7 +42,7 @@ class ClientViewModel(private val repository: IClientRepository = ClientReposito
                         } catch (e: Exception) {
                             "Server error ${response.code()}"
                         }
-                        android.util.Log.e("ClientViewModel", "createClient failed: $err")
+                        safeLogError("ClientViewModel", "createClient failed: $err")
                         onError(err)
                         onResult(null)
                     }
@@ -45,7 +50,7 @@ class ClientViewModel(private val repository: IClientRepository = ClientReposito
 
                 override fun onFailure(call: Call<Client>, t: Throwable) {
                     val msg = t.message ?: "Network error"
-                    android.util.Log.e("ClientViewModel", "createClient onFailure: $msg")
+                    safeLogError("ClientViewModel", "createClient onFailure: $msg")
                     onError(msg)
                     onResult(null)
                 }
@@ -60,7 +65,7 @@ class ClientViewModel(private val repository: IClientRepository = ClientReposito
                     onResult(response.body())
                 } else {
                     val err = try { response.errorBody()?.string() ?: "Server error ${response.code()}" } catch (e: Exception) { "Server error ${response.code()}" }
-                    android.util.Log.e("ClientViewModel", "createClientMap failed: $err")
+                    safeLogError("ClientViewModel", "createClientMap failed: $err")
                     onError(err)
                     onResult(null)
                 }
@@ -68,7 +73,7 @@ class ClientViewModel(private val repository: IClientRepository = ClientReposito
 
             override fun onFailure(call: Call<Client>, t: Throwable) {
                 val msg = t.message ?: "Network error"
-                android.util.Log.e("ClientViewModel", "createClientMap onFailure: $msg")
+                safeLogError("ClientViewModel", "createClientMap onFailure: $msg")
                 onError(msg)
                 onResult(null)
             }

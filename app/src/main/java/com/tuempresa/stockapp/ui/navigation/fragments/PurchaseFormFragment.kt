@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tuempresa.stockapp.R
+import com.tuempresa.stockapp.offline.NetworkUtils
+import com.tuempresa.stockapp.offline.SyncQueueRepository
 import com.tuempresa.stockapp.viewmodels.PurchaseViewModel
 import com.tuempresa.stockapp.viewmodels.SupplierViewModel
 import com.tuempresa.stockapp.viewmodels.ProductViewModel
@@ -195,12 +197,37 @@ class PurchaseFormFragment : Fragment() {
     }
 
     private fun performCreate(purchaseMap: Map<String, Any>) {
+        val queueRepository = SyncQueueRepository(requireContext())
+
+        if (!NetworkUtils.isOnline(requireContext())) {
+            queueRepository.enqueueCreatePurchase(purchaseMap)
+            val pendingCount = queueRepository.getPendingCount()
+            Toast.makeText(
+                requireContext(),
+                "Sin internet. Compra guardada en cola (${pendingCount} pendiente(s)).",
+                Toast.LENGTH_LONG
+            ).show()
+            findNavController().navigateUp()
+            return
+        }
+
         purchaseViewModel.createPurchaseMap(purchaseMap) { saved ->
             if (saved != null) {
                 Toast.makeText(requireContext(), "Compra guardada", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             } else {
-                Toast.makeText(requireContext(), "Error al guardar compra", Toast.LENGTH_SHORT).show()
+                if (!NetworkUtils.isOnline(requireContext())) {
+                    queueRepository.enqueueCreatePurchase(purchaseMap)
+                    val pendingCount = queueRepository.getPendingCount()
+                    Toast.makeText(
+                        requireContext(),
+                        "Sincronización diferida: compra en cola (${pendingCount} pendiente(s)).",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    findNavController().navigateUp()
+                } else {
+                    Toast.makeText(requireContext(), "Error al guardar compra", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

@@ -18,6 +18,8 @@
     <color name="colorOnBackground">#101828</color>
     <color name="colorError">#B42318</color>
     <color name="colorOnError">#FFFFFF</color>
+    <color name="colorWarning">#B54708</color>
+    <color name="colorOnWarning">#FFFFFF</color>
     <color name="colorSuccess">#067647</color>
     <color name="colorOnSuccess">#FFFFFF</color>
 

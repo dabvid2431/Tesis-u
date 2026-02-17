@@ -17,7 +17,7 @@ class ReportsViewModel(application: Application) : AndroidViewModel(application)
     val lowStockData = MutableLiveData<List<Map<String, Any>>>()
     val stockMovementsData = MutableLiveData<List<Map<String, Any>>>()
     
-    private val apiService = RetrofitClient.instance
+    private val apiService get() = RetrofitClient.instance
     private val prefs = application.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     
     fun fetchSalesReport() {

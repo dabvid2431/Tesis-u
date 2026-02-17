@@ -121,4 +121,8 @@
         android:id="@+id/notificationsFragment"
         android:name="com.tuempresa.stockapp.ui.navigation.fragments.NotificationsFragment"
         android:label="Notificaciones" />
+    <fragment
+        android:id="@+id/syncCenterFragment"
+        android:name="com.tuempresa.stockapp.ui.navigation.fragments.SyncCenterFragment"
+        android:label="Centro de sincronización" />
 </navigation>

@@ -5,7 +5,7 @@ import com.tuempresa.stockapp.models.User
 import retrofit2.Call
 
 class UserRepository : IUserRepository {
-    private val api = RetrofitClient.instance
+    private val api get() = RetrofitClient.instance
 
     override fun login(username: String, password: String): Call<User> = api.login(mapOf("username" to username, "password" to password))
     override fun createUser(user: User): Call<User> = api.createUser(user)

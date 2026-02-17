@@ -15,7 +15,7 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
     val notificationsData = MutableLiveData<List<Notification>>()
     val markAsReadSuccess = MutableLiveData<Boolean>()
     
-    private val apiService = RetrofitClient.instance
+    private val apiService get() = RetrofitClient.instance
     private val prefs = application.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     
     fun fetchNotifications() {

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
     id("jacoco")
     id("com.google.gms.google-services")
 }
@@ -81,6 +82,12 @@ dependencies {
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+
+    // Offline-first sync
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    add("kapt", "androidx.room:room-compiler:2.6.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
     
     // Security - Encrypted SharedPreferences
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
